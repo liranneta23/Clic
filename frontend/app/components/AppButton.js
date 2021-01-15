@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
     margin: 10,
   },
   text: {
-    fontSize: "150%",
+    fontSize: 25,
     fontFamily: "couchin",
     color: colors.white,
     fontWeight: "bold",

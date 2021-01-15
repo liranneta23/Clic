@@ -41,13 +41,13 @@ const styles = StyleSheet.create({
   },
   text: {
     paddingTop: 10,
-    fontSize: "150%",
+    fontSize: 25,
     fontFamily: "couchin",
     color: colors.white,
   },
   title: {
     paddingBottom: 30,
-    fontSize: "180%",
+    fontSize: 30,
     fontFamily: "couchin",
     color: colors.white,
     position: "absolute",
