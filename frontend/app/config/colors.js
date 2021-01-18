@@ -4,7 +4,7 @@ export const colors = {
   white: "ghostwhite",
   black: "black",
   meduimBlack: "#6e6969",
-  lightGray: "#aaa",
+  lightGray: "#ddd",
   danger: "#ff5253",
   
 }
