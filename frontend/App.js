@@ -14,26 +14,8 @@ import ListItem from "./app/components/ListItem"
 import AccountScreen from "./app/screens/AccountScreen"
 import AppTextInput from "./app/components/AppTextInput"
 import AppPicker from "./app/components/AppPicker"
-
-const categories = [
-  { label: "Funiture", value: 1 },
-  { label: "Clothing", value: 2 },
-  { label: "Cameras", value: 3 },
-]
+import LoginScreen from "./app/screens/LoginScreen"
 
 export default function App() {
-  const [category, setCategory] = useState(categories[0])
-
-  return (
-    <Screen>
-      <AppPicker
-        selectedItem={category}
-        onSelectedItem={(item) => setCategory(item)}
-        items={categories}
-        icon="apps"
-        placeholder="Category"
-      />
-      <AppTextInput icon="email" />
-    </Screen>
-  )
+  return <LoginScreen />
 }
