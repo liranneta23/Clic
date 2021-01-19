@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 25,
-    fontFamily: "couchin",
+    fontFamily: "Roboto",
     color: colors.white,
     fontWeight: "bold",
   },

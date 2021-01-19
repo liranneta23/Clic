@@ -42,13 +42,13 @@ const styles = StyleSheet.create({
   text: {
     paddingTop: 10,
     fontSize: 25,
-    fontFamily: "couchin",
+    fontFamily: "Roboto",
     color: colors.white,
   },
   title: {
     paddingBottom: 30,
     fontSize: 30,
-    fontFamily: "couchin",
+    fontFamily: "Roboto",
     color: colors.white,
     position: "absolute",
     bottom: 120,

@@ -6,5 +6,5 @@ export const colors = {
   meduimBlack: "#6e6969",
   lightGray: "#ddd",
   danger: "#ff5253",
-  
+  fancyGray: "#0d0d0d",
 }
