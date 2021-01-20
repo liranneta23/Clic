@@ -2,7 +2,6 @@ import React, { useState } from "react"
 import { Button, FlatList, Modal, StyleSheet, View } from "react-native"
 import { MaterialCommunityIcons } from "@expo/vector-icons"
 
-import { defaultStyles } from "../config/styles"
 import { colors } from "../config/colors"
 import AppText from "./AppText"
 import { TouchableWithoutFeedback } from "react-native-gesture-handler"
@@ -12,7 +11,7 @@ import PickerItem from "./PickerItem"
 const AppPicker = ({
   icon,
   items,
-  onSelectedItem,
+  onSelectedItem: setSelectedItem,
   placeholder,
   selectedItem,
 }) => {
@@ -21,15 +20,21 @@ const AppPicker = ({
     <>
       <TouchableWithoutFeedback onPress={() => setModalVisible(true)}>
         <View style={styles.container}>
-          <MaterialCommunityIcons
-            name={icon}
-            size={20}
-            style={styles.icon}
-            color={colors.meduimBlack}
-          />
-          <AppText style={styles.picker}>
-            {selectedItem ? selectedItem.label : placeholder}
-          </AppText>
+          {icon && (
+            <MaterialCommunityIcons
+              name={icon}
+              size={20}
+              style={styles.icon}
+              color={colors.meduimBlack}
+            />
+          )}
+
+          {selectedItem ? (
+            <AppText style={styles.text}>{selectedItem.label}</AppText>
+          ) : (
+            <AppText style={styles.placeholder}>{placeholder}</AppText>
+          )}
+
           <MaterialCommunityIcons
             name="chevron-down"
             size={20}
@@ -48,7 +53,7 @@ const AppPicker = ({
                 label={item.label}
                 onPress={() => {
                   setModalVisible(false)
-                  onSelectedItem(item)
+                  setSelectedItem(item)
                 }}
               />
             )}
@@ -69,9 +74,13 @@ const styles = StyleSheet.create({
   icon: {
     marginRight: 10,
   },
-  picker: {
+  text: {
     flex: 1,
     color: colors.fancyGray,
+  },
+  placeholder: {
+    flex: 1,
+    color: colors.meduimBlack,
   },
 })
 
