@@ -1,9 +1,15 @@
-import React from "react"
+import React, { useEffect, useState } from "react"
 import { StyleSheet } from "react-native"
 import * as Yup from "yup"
+import * as Location from "expo-location"
 
 import Screen from "../components/Screen"
-import { AppForm, AppFormField, SubmitButton } from "../components/forms"
+import {
+  AppForm,
+  AppFormField,
+  SubmitButton,
+  AppFormImagePicker,
+} from "../components/forms"
 import AppFormPicker from "../components/forms/AppFormPicker"
 import { colors } from "../config/colors"
 import CategoryPickerItem from "../components/CategoryPickerItem"
@@ -13,6 +19,7 @@ const validationSchema = Yup.object().shape({
   price: Yup.number().required().min(1).max(10000).label("Price"),
   description: Yup.string().label("Description"),
   category: Yup.object().required().nullable().label("Category"),
+  images: Yup.array().min(1, "Please select atleast one image"),
 })
 
 const categories = [
@@ -57,6 +64,30 @@ const categories = [
   },
 ]
 const ListingEditScreen = () => {
+  const [location, setLocation] = useState()
+
+  const getLocation = async () => {
+    const result = await Location.requestPermissionsAsync()
+    if (!result.granted) {
+      return
+    } else {
+      try {
+        const result = await Location.getLastKnownPositionAsync()
+        const {
+          coords: { latitude, longitude },
+        } = result
+        setLocation({
+          latitude,
+          logitude,
+        })
+      } catch (error) {
+        return
+      }
+    }
+  }
+  useEffect(() => {
+    getLocation()
+  }, [])
   return (
     <Screen style={styles.container}>
       <AppForm
@@ -65,10 +96,12 @@ const ListingEditScreen = () => {
           price: "",
           description: "",
           category: null,
+          images: [],
         }}
-        onSubmit={(values) => console.log(values)}
+        onSubmit={(values) => console.log(location)}
         validationSchema={validationSchema}
       >
+        <AppFormImagePicker name="images" />
         <AppFormField maxLength={255} name="title" placeholder="Title" />
         <AppFormField
           keyboardType="numeric"

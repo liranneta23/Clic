@@ -26,16 +26,8 @@ import LoginScreen from "./app/screens/LoginScreen"
 import ListingEditScreen from "./app/screens/ListingEditScreen"
 import AppButton from "./app/components/AppButton"
 import ImageInput from "./app/components/ImageInput"
+import ImageInputList from "./app/components/ImageInputList"
 
 export default function App() {
-  const [imageUri, setImageUri] = useState()
-
-  return (
-    <Screen>
-      <ImageInput
-        imageUri={imageUri}
-        setImageUriInImageInput={(uri) => setImageUri(uri)}
-      />
-    </Screen>
-  )
+  return <ListingEditScreen />
 }

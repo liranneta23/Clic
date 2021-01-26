@@ -32,6 +32,9 @@ const styles = StyleSheet.create({
     marginRight: 10,
     alignSelf: "center",
   },
+  text: {
+    backgroundColor: "red",
+  },
 })
 
 export default AppTextInput
