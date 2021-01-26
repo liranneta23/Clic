@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react"
 import { StyleSheet } from "react-native"
 import * as Yup from "yup"
-import * as Location from "expo-location"
 
 import Screen from "../components/Screen"
 import {
@@ -13,6 +12,7 @@ import {
 import AppFormPicker from "../components/forms/AppFormPicker"
 import { colors } from "../config/colors"
 import CategoryPickerItem from "../components/CategoryPickerItem"
+import useLocation from "../components/custom-hooks/useLocation"
 
 const validationSchema = Yup.object().shape({
   title: Yup.string().required().min(1).label("Title"),
@@ -64,30 +64,8 @@ const categories = [
   },
 ]
 const ListingEditScreen = () => {
-  const [location, setLocation] = useState()
+  const location = useLocation()
 
-  const getLocation = async () => {
-    const result = await Location.requestPermissionsAsync()
-    if (!result.granted) {
-      return
-    } else {
-      try {
-        const result = await Location.getLastKnownPositionAsync()
-        const {
-          coords: { latitude, longitude },
-        } = result
-        setLocation({
-          latitude,
-          logitude,
-        })
-      } catch (error) {
-        return
-      }
-    }
-  }
-  useEffect(() => {
-    getLocation()
-  }, [])
   return (
     <Screen style={styles.container}>
       <AppForm
@@ -98,7 +76,9 @@ const ListingEditScreen = () => {
           category: null,
           images: [],
         }}
-        onSubmit={(values) => console.log(location)}
+        onSubmit={(values) =>
+          console.log(location, "Approximate stuff thing!!!!")
+        }
         validationSchema={validationSchema}
       >
         <AppFormImagePicker name="images" />
