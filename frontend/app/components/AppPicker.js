@@ -12,10 +12,10 @@ const AppPicker = ({
   icon,
   items,
   numberOfColumns = 1,
-  onSelectedItem: setSelectedItem,
   placeholder,
   PickerItemComponent = PickerItem,
   selectedItem,
+  setSelectedItem,
   width = "100%",
 }) => {
   const [modalVisible, setModalVisible] = useState(false)
