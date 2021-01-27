@@ -3,7 +3,6 @@ import { Platform, StyleSheet, TextInput, View } from "react-native"
 import { MaterialCommunityIcons } from "@expo/vector-icons"
 
 import defaultStyles from "../config/styles"
-import AppText from "./AppText"
 
 const AppTextInput = ({ icon, width = "100%", ...otherProps }) => {
   return (
