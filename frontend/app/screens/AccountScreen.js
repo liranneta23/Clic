@@ -14,6 +14,7 @@ const menuItems = [
       name: "format-list-bulleted",
       backgoundColor: colors.primary,
     },
+    targetScreen: "MyListings",
   },
   {
     title: "My Messages",
@@ -21,10 +22,11 @@ const menuItems = [
       name: "email",
       backgoundColor: colors.secondary,
     },
+    targetScreen: "Messages",
   },
 ]
 
-const AccountScreen = () => {
+const AccountScreen = ({ navigation }) => {
   return (
     <Screen style={styles.screen}>
       <View style={styles.container}>
@@ -48,6 +50,7 @@ const AccountScreen = () => {
                   backgroundColor={item.icon.backgoundColor}
                 />
               }
+              onPress={() => navigation.navigate(item.targetScreen)}
             />
           )}
         />

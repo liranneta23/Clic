@@ -6,6 +6,7 @@ import { StyleSheet, View } from "react-native"
 import WelcomeScreen from "../screens/WelcomeScreen"
 import RegisterScreen from "../screens/RegisterScreen"
 import LoginScreen from "../screens/LoginScreen"
+import routeNames from "./routeNames"
 
 const Stack = createStackNavigator()
 
@@ -13,20 +14,16 @@ const AuthNavigator = () => {
   return (
     <Stack.Navigator>
       <Stack.Screen
-        name="WelcomeScreen"
+        name={routeNames.WELCOME_SCREEN}
         component={WelcomeScreen}
         options={{
           headerShown: false,
         }}
       />
-      <Stack.Screen name="Register" component={RegisterScreen} />
-      <Stack.Screen name="Login" component={LoginScreen} />
+      <Stack.Screen name={routeNames.REGISTER} component={RegisterScreen} />
+      <Stack.Screen name={routeNames.LOGIN} component={LoginScreen} />
     </Stack.Navigator>
   )
 }
-
-const styles = StyleSheet.create({
-  container: {},
-})
 
 export default AuthNavigator

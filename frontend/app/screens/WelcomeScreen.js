@@ -2,6 +2,7 @@ import React, { useEffect } from "react"
 import { Image, ImageBackground, StyleSheet, Text, View } from "react-native"
 import AppButton from "../components/AppButton"
 import { colors } from "../config/colors"
+import routeNames from "../navigators/routeNames"
 
 const WelcomeScreen = ({ navigation }) => {
   return (
@@ -15,10 +16,13 @@ const WelcomeScreen = ({ navigation }) => {
         <Image style={styles.logo} source={require("../assets/icon.png")} />
         <Text style={styles.text}>Sell What You Don't Need.</Text>
       </View>
-      <AppButton title="Login" onPress={() => navigation.navigate("Login")} />
       <AppButton
-        title="Register"
-        onPress={() => navigation.navigate("Register")}
+        title={routeNames.LOGIN}
+        onPress={() => navigation.navigate(routeNames.LOGIN)}
+      />
+      <AppButton
+        title={routeNames.REGISTER}
+        onPress={() => navigation.navigate(routeNames.REGISTER)}
         color="secondary"
       />
     </ImageBackground>
