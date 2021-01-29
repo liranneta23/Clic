@@ -1,10 +1,13 @@
-import React from "react"
+import React, { useState, useEffect } from "react"
 import { FlatList, StyleSheet } from "react-native"
 
 import Screen from "../components/Screen"
 import AppCard from "../components/AppCard"
 import { colors } from "../config/colors"
 import routeNames from "../navigators/routeNames"
+
+import listingsApi from "../../api/listings"
+import AppText from "../components/AppText"
 
 const listings = [
   {
