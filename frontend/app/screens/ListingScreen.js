@@ -11,6 +11,22 @@ import AppText from "../components/AppText"
 import AppButton from "../components/AppButton"
 import AppActivityIndicator from "../components/AppActivityIndicator"
 
+// Just you can see the implementations... nothing serious
+const listingg = [
+  {
+    id: 3,
+    title: "Gray couch in a great condition",
+    images: [{ fileName: "couch2" }],
+    categoryId: 1,
+    price: 1200,
+    userId: 2,
+    location: {
+      latitude: 37.78825,
+      longitude: -122.4324,
+    },
+  },
+]
+
 const ListingScreen = ({ navigation }) => {
   const [listings, setListings] = useState()
   const [error, setError] = useState(false)
@@ -30,7 +46,7 @@ const ListingScreen = ({ navigation }) => {
   }
   useEffect(() => {
     getAllListings()
-  }, [])
+  }, [listings])
 
   return (
     <Screen style={styles.screen}>
@@ -54,7 +70,10 @@ const ListingScreen = ({ navigation }) => {
           data={listings}
           keyExtractor={(listing) => listing.id.toString()}
           refreshing={refresh}
-          onRefresh={() => getAllListings()}
+          onRefresh={() =>
+            // getAllListings()
+            setListings(listingg)
+          }
           renderItem={({ item }) => (
             <AppCard
               title={item.title}
