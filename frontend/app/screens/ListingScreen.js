@@ -8,39 +8,65 @@ import routeNames from "../navigators/routeNames"
 
 import listingsApi from "../../api/listings"
 import AppText from "../components/AppText"
-
-const listings = [
-  {
-    id: 1,
-    title: "Red jacket for sale",
-    price: 100,
-    image: require("../assets/jacket.jpeg"),
-  },
-  {
-    id: 2,
-    title: "Couch in good condition",
-    price: 764,
-    image: require("../assets/couch.jpg"),
-  },
-]
+import AppButton from "../components/AppButton"
+import AppActivityIndicator from "../components/AppActivityIndicator"
 
 const ListingScreen = ({ navigation }) => {
+  const [listings, setListings] = useState()
+  const [error, setError] = useState(false)
+  const [loading, setLoading] = useState(true)
+  const [refresh, setRefresh] = useState(false)
+
+  const getAllListings = async () => {
+    const result = await listingsApi.getListings()
+    if (result.problem) {
+      setError(true)
+      setLoading(false)
+    } else {
+      setError(false)
+      setLoading(false)
+      setListings(result.data)
+    }
+  }
+  useEffect(() => {
+    getAllListings()
+  }, [])
+
   return (
     <Screen style={styles.screen}>
-      <FlatList
-        data={listings}
-        keyExtractor={(listing) => listing.id.toString()}
-        renderItem={({ item }) => (
-          <AppCard
-            title={item.title}
-            subTitle={"$" + item.price}
-            image={item.image}
-            onPress={() =>
-              navigation.navigate(routeNames.LISTING_DETAILS, item)
-            }
+      {loading && (
+        <>
+          <AppActivityIndicator visible={loading} />
+        </>
+      )}
+      {error && (
+        <>
+          <AppText>An error occured. Unable to retrieve the listings</AppText>
+          <AppButton
+            title="Retry"
+            color="primary"
+            onPress={() => getAllListings()}
           />
-        )}
-      />
+        </>
+      )}
+      {listings && (
+        <FlatList
+          data={listings}
+          keyExtractor={(listing) => listing.id.toString()}
+          refreshing={refresh}
+          onRefresh={() => getAllListings()}
+          renderItem={({ item }) => (
+            <AppCard
+              title={item.title}
+              subTitle={"$" + item.price}
+              image={item.images[0].url}
+              onPress={() =>
+                navigation.navigate(routeNames.LISTING_DETAILS, item)
+              }
+            />
+          )}
+        />
+      )}
     </Screen>
   )
 }

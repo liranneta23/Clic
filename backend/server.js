@@ -1,18 +1,26 @@
 const express = require("express")
 const app = express()
 const cors = require("cors")
-
-app.use(cors())
-
-// Handles .env
-require("dotenv/config")
+const helmet = require("helmet")
+const compression = require("compression")
 
 // handles config/filename.json
 const config = require("config")
 
-app.get("/api", (req, res) => {
-  res.send("API is running!!!")
-})
+const listingsRoute = require("./routes/listingsRoute")
+
+app.use(cors())
+
+// Handle images and assets
+app.use(express.static("public"))
+app.use(express.json())
+app.use(helmet())
+app.use(compression())
+
+// Handles .env
+require("dotenv/config")
+
+app.use("/api/listings", listingsRoute)
 
 const PORT = process.env.PORT || config.get("port")
 app.listen(PORT, () => {
