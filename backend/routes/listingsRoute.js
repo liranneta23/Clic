@@ -50,7 +50,6 @@ router.post(
   [
     upload.array("images", config.get("maxImageCount")),
     validateWith(schema),
-
     imageResize,
   ],
   async (req, res) => {

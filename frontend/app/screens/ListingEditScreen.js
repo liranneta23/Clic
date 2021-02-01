@@ -14,6 +14,7 @@ import { colors } from "../config/colors"
 import CategoryPickerItem from "../components/CategoryPickerItem"
 import useLocation from "../components/custom-hooks/useLocation"
 import listingsApi from "../../api/listings"
+import UploadScreen from "./UploadScreen"
 
 const validationSchema = Yup.object().shape({
   title: Yup.string().required().min(1).label("Title"),
@@ -66,21 +67,35 @@ const categories = [
 ]
 const ListingEditScreen = () => {
   const location = useLocation()
+  const [uploadVisible, setUploadVisible] = useState(false)
+  const [progress, setProgress] = useState(0)
 
-  const handleSubmit = async (listing) => {
-    const result = await listingsApi.addListing({
-      ...listing,
-      location,
-    })
+  // listing is the value from formik, the second argument is from formik too. use to reset the data.
+  const handleSubmit = async (listing, { resetForm }) => {
+    setUploadVisible(true)
+    const result = await listingsApi.addListing(
+      {
+        ...listing,
+        location,
+      },
+      (progressTime) => setProgress(progressTime)
+    )
 
-    if (!result.ok)
+    if (!result.ok) {
+      setUploadVisible(false)
       return alert("Unable to save the listing. Please try again.")
+    }
 
-    alert("Success! listing has been posted.")
+    resetForm()
   }
 
   return (
     <Screen style={styles.container}>
+      <UploadScreen
+        onAnimationFinish={() => setUploadVisible(false)}
+        progress={progress}
+        visible={uploadVisible}
+      />
       <AppForm
         initialValues={{
           title: "",
