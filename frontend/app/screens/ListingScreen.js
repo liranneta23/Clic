@@ -10,40 +10,16 @@ import listingsApi from "../../api/listings"
 import AppText from "../components/AppText"
 import AppButton from "../components/AppButton"
 import AppActivityIndicator from "../components/AppActivityIndicator"
-
-// Just you can see the implementations... nothing serious
-const listingg = [
-  {
-    id: 3,
-    title: "Gray couch in a great condition",
-    images: [{ fileName: "couch2" }],
-    categoryId: 1,
-    price: 1200,
-    userId: 2,
-    location: {
-      latitude: 37.78825,
-      longitude: -122.4324,
-    },
-  },
-]
+import useApi from "../components/custom-hooks/useApi"
 
 const ListingScreen = ({ navigation }) => {
-  const [listings, setListings] = useState()
-  const [error, setError] = useState(false)
-  const [loading, setLoading] = useState(true)
   const [refresh, setRefresh] = useState(false)
 
-  const getAllListings = async () => {
-    const result = await listingsApi.getListings()
-    if (result.problem) {
-      setError(true)
-      setLoading(false)
-    } else {
-      setError(false)
-      setLoading(false)
-      setListings(result.data)
-    }
-  }
+  // To use multiple times, do not destructure. just use a variable.
+  const { data: listings, error, loading, request: getAllListings } = useApi(
+    listingsApi.getListings
+  )
+
   useEffect(() => {
     getAllListings()
   }, [listings])
@@ -70,10 +46,7 @@ const ListingScreen = ({ navigation }) => {
           data={listings}
           keyExtractor={(listing) => listing.id.toString()}
           refreshing={refresh}
-          onRefresh={() =>
-            // getAllListings()
-            setListings(listingg)
-          }
+          onRefresh={() => getAllListings()}
           renderItem={({ item }) => (
             <AppCard
               title={item.title}
