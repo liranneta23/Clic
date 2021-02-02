@@ -15,6 +15,7 @@ const ListItem = ({
   renderRightActions,
 }) => {
   return (
+    // swipeable handles swipe to reveal a delete buttoon in message screen.
     <Swipeable renderRightActions={renderRightActions}>
       <TouchableHighlight underlayColor={colors.lightGray} onPress={onPress}>
         <View style={styles.container}>

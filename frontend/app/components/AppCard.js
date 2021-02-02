@@ -1,14 +1,23 @@
 import React from "react"
-import { Image, StyleSheet, TouchableOpacity, View } from "react-native"
+import { StyleSheet, TouchableOpacity, View } from "react-native"
+import { Image } from "react-native-expo-image-cache"
 
 import { colors } from "../config/colors"
 import AppText from "./AppText"
 
-const AppCard = ({ title, subTitle, image, onPress }) => {
+// The image component is from react-native-expo-image-cache, used to hold the image in the cache
+// Cloudinary can be used to save images....
+
+const AppCard = ({ title, subTitle, image, onPress, thumbnail }) => {
   return (
     <TouchableOpacity onPress={onPress}>
       <View style={styles.card}>
-        <Image style={styles.image} source={{ uri: image }} />
+        <Image
+          style={styles.image}
+          preview={{ uri: thumbnail }}
+          uri={image}
+          tint="light"
+        />
         <View style={styles.detailsContainer}>
           <AppText style={styles.title}>{title} </AppText>
           <AppText style={styles.subTitle}>{subTitle}</AppText>

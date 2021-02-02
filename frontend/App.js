@@ -6,6 +6,7 @@ import {
   View,
   Image,
   TouchableWithoutFeedback,
+  StyleSheet,
 } from "react-native"
 import { MaterialCommunityIcons } from "@expo/vector-icons"
 import * as ImagePicker from "expo-image-picker"
@@ -13,6 +14,8 @@ import * as Permissions from "expo-permissions"
 import { createStackNavigator } from "@react-navigation/stack"
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
 import { NavigationContainer, useNavigation } from "@react-navigation/native"
+import NetInfo, { useNetInfo } from "@react-native-community/netinfo"
+import AsyncStorage from "@react-native-async-storage/async-storage"
 
 import ViewImageScreen from "./app/screens/ViewImageScreen"
 import WelcomeScreen from "./app/screens/WelcomeScreen"
@@ -34,12 +37,18 @@ import RegisterScreen from "./app/screens/RegisterScreen"
 import AuthNavigator from "./app/navigators/AuthNavigator"
 import navigationTheme from "./app/navigators/navigationTheme"
 import AppNavigator from "./app/navigators/AppNavigator"
+import AppText from "./app/components/AppText"
+import { colors } from "./app/config/colors"
+import OfflineNotice from "./app/components/OfflineNotice"
 
 // Replace AppNavigator with AuthNavigator to see the login, registration and welcome screen. Try it!!!
 export default function App() {
   return (
-    <NavigationContainer theme={navigationTheme}>
-      <AppNavigator />
-    </NavigationContainer>
+    <>
+      <OfflineNotice />
+      <NavigationContainer theme={navigationTheme}>
+        <AppNavigator />
+      </NavigationContainer>
+    </>
   )
 }
