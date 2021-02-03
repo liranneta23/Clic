@@ -25,42 +25,40 @@ const ListingScreen = ({ navigation }) => {
   }, [listings])
 
   return (
-    <Screen style={styles.screen}>
-      {loading && (
-        <>
-          <AppActivityIndicator visible={loading} />
-        </>
-      )}
-      {error && (
-        <>
-          <AppText>An error occured. Data fetched from cache.</AppText>
-          <AppButton
-            title="Retry"
-            color="primary"
-            onPress={() => getAllListings()}
-          />
-        </>
-      )}
-      {listings && (
-        <FlatList
-          data={listings}
-          keyExtractor={(listing) => listing.id.toString()}
-          refreshing={refresh}
-          onRefresh={() => getAllListings()}
-          renderItem={({ item }) => (
-            <AppCard
-              title={item.title}
-              subTitle={"$" + item.price}
-              image={item.images[0].url}
-              thumbnail={item.images[0].thumbnailUrl}
-              onPress={() =>
-                navigation.navigate(routeNames.LISTING_DETAILS, item)
-              }
+    <>
+      {loading && <AppActivityIndicator visible={loading} />}
+      <Screen style={styles.screen}>
+        {error && (
+          <>
+            <AppText>An error occured. Data fetched from cache.</AppText>
+            <AppButton
+              title="Retry"
+              color="primary"
+              onPress={() => getAllListings()}
             />
-          )}
-        />
-      )}
-    </Screen>
+          </>
+        )}
+        {listings && (
+          <FlatList
+            data={listings}
+            keyExtractor={(listing) => listing.id.toString()}
+            refreshing={refresh}
+            onRefresh={() => getAllListings()}
+            renderItem={({ item }) => (
+              <AppCard
+                title={item.title}
+                subTitle={"$" + item.price}
+                image={item.images[0].url}
+                thumbnail={item.images[0].thumbnailUrl}
+                onPress={() =>
+                  navigation.navigate(routeNames.LISTING_DETAILS, item)
+                }
+              />
+            )}
+          />
+        )}
+      </Screen>
+    </>
   )
 }
 const styles = StyleSheet.create({

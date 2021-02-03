@@ -9,10 +9,11 @@ const config = require("config")
 
 const listingsRoute = require("./routes/listingsRoute")
 const authRoute = require("./routes/authRoute")
+const registerRoute = require("./routes/registerRoute")
 
 app.use(cors())
 
-// Handle images and assets
+// Handle images and assets and server protection
 app.use(express.static("public"))
 app.use(express.json())
 app.use(helmet())
@@ -23,6 +24,7 @@ require("dotenv/config")
 
 app.use("/api/listings", listingsRoute)
 app.use("/api/login", authRoute)
+app.use("/api/register", registerRoute)
 
 const PORT = process.env.PORT || config.get("port")
 app.listen(PORT, () => {

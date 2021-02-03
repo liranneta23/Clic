@@ -5,15 +5,17 @@ const useApi = (apiFunc) => {
   const [error, setError] = useState(false)
   const [loading, setLoading] = useState(true)
 
-  const request = async () => {
-    const result = await apiFunc()
+  const request = async (...args) => {
+    const result = await apiFunc(...args)
     if (result.problem) {
       setError(true)
       setLoading(false)
+      return result
     } else {
       setError(false)
       setLoading(false)
       setData(result.data)
+      return result
     }
   }
 
