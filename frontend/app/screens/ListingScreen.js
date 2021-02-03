@@ -33,7 +33,7 @@ const ListingScreen = ({ navigation }) => {
       )}
       {error && (
         <>
-          <AppText>An error occured. Unable to retrieve the listings</AppText>
+          <AppText>An error occured. Data fetched from cache.</AppText>
           <AppButton
             title="Retry"
             color="primary"

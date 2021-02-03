@@ -8,6 +8,7 @@ const compression = require("compression")
 const config = require("config")
 
 const listingsRoute = require("./routes/listingsRoute")
+const authRoute = require("./routes/authRoute")
 
 app.use(cors())
 
@@ -21,6 +22,7 @@ app.use(compression())
 require("dotenv/config")
 
 app.use("/api/listings", listingsRoute)
+app.use("/api/login", authRoute)
 
 const PORT = process.env.PORT || config.get("port")
 app.listen(PORT, () => {

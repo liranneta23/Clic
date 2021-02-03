@@ -16,6 +16,8 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
 import { NavigationContainer, useNavigation } from "@react-navigation/native"
 import NetInfo, { useNetInfo } from "@react-native-community/netinfo"
 import AsyncStorage from "@react-native-async-storage/async-storage"
+import jwtDecode from "jwt-decode"
+import AppLoading from "expo-app-loading"
 
 import ViewImageScreen from "./app/screens/ViewImageScreen"
 import WelcomeScreen from "./app/screens/WelcomeScreen"
@@ -41,14 +43,43 @@ import AppText from "./app/components/AppText"
 import { colors } from "./app/config/colors"
 import OfflineNotice from "./app/components/OfflineNotice"
 
+import AuthContext from "./app/auth/appContext"
+import authStorage from "./app/auth/storage"
+
 // Replace AppNavigator with AuthNavigator to see the login, registration and welcome screen. Try it!!!
 export default function App() {
+  const [user, setUser] = useState()
+  const [isReady, setIsReady] = useState(false)
+
+  const restoreToken = async () => {
+    const token = await authStorage.getToken()
+    if (!token) return
+    setUser(jwtDecode(token))
+  }
+
+  // This controls the splash screen or the screen that shows before our app loads
+  // Control the splash screen backgroundImage in app.json
+
+  // expo-app-loading gives an error and I can't fix it!!!!!
+  // if (!isReady)
+  //   return (
+  //     <AppLoading
+  //       startAsync={restoreToken}
+  //       onFinish={setIsReady(true)}
+  //       onError={console.warn}
+  //     />
+  //   )
+
+  useEffect(() => {
+    restoreToken()
+  }, [])
+
   return (
-    <>
+    <AuthContext.Provider value={{ user, setUser }}>
       <OfflineNotice />
       <NavigationContainer theme={navigationTheme}>
-        <AppNavigator />
+        {user ? <AppNavigator /> : <AuthNavigator />}
       </NavigationContainer>
-    </>
+    </AuthContext.Provider>
   )
 }
