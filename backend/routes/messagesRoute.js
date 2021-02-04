@@ -22,9 +22,9 @@ router.get("/", authMiddleware, (req, res) => {
     dateTime: message.dateTime,
     content: message.content,
     fromUser: mapUser(message.fromUserId),
-    toUser: mapUser(message.toUserId),
+    toUser: mapUser(message.fromUserId),
   }))
-  res.send(user)
+  res.send(resources)
 })
 
 module.exports = router

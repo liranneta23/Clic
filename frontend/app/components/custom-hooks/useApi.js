@@ -25,6 +25,7 @@ const useApi = (apiFunc) => {
     error,
     loading,
     request,
+    setData,
   }
 }
 export default useApi

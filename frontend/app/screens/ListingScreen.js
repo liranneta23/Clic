@@ -1,10 +1,17 @@
 import React, { useState, useEffect } from "react"
-import { FlatList, StyleSheet } from "react-native"
+import {
+  FlatList,
+  StyleSheet,
+  ScrollView,
+  TouchableOpacity,
+  View,
+} from "react-native"
 
 import Screen from "../components/Screen"
 import AppCard from "../components/AppCard"
 import { colors } from "../config/colors"
 import routeNames from "../navigators/routeNames"
+import categories from "../config/categories"
 
 import listingsApi from "../../api/listings"
 import AppText from "../components/AppText"
@@ -38,6 +45,27 @@ const ListingScreen = ({ navigation }) => {
             />
           </>
         )}
+        <ScrollView
+          horizontal
+          style={styles.scrollView}
+          contentContainerStyle={styles.contentContainerStyle}
+        >
+          {categories.map((item, key) => {
+            return (
+              // Flat List Item
+              <View style={{ flexDirection: "row" }} key={key}>
+                <TouchableOpacity>
+                  <AppText
+                    style={styles.text}
+                    onPress={() => console.log(item.label)}
+                  >
+                    {item.label}
+                  </AppText>
+                </TouchableOpacity>
+              </View>
+            )
+          })}
+        </ScrollView>
         {listings && (
           <FlatList
             data={listings}
@@ -65,6 +93,14 @@ const styles = StyleSheet.create({
   screen: {
     padding: 10,
     backgroundColor: colors.lightGray,
+  },
+  scrollView: {
+    height: "10%",
+  },
+  text: {
+    color: colors.white,
+    padding: 10,
+    backgroundColor: colors.fancyGray,
   },
 })
 
