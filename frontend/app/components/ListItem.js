@@ -10,6 +10,7 @@ const ListItem = ({
   title,
   subTitle,
   image,
+  thumbnailImage,
   IconComponent,
   onPress,
   renderRightActions,
@@ -21,6 +22,9 @@ const ListItem = ({
         <View style={styles.container}>
           {IconComponent}
           {image && <Image style={styles.image} source={image} />}
+          {thumbnailImage && (
+            <Image style={styles.image} source={{ uri: thumbnailImage }} />
+          )}
           <View style={styles.detailsContainer}>
             <AppText style={styles.title} numberOfLines={1}>
               {title}

@@ -26,7 +26,7 @@ const ListingScreen = ({ navigation }) => {
 
   return (
     <>
-      {loading && <AppActivityIndicator visible={loading} />}
+      <AppActivityIndicator visible={loading} />
       <Screen style={styles.screen}>
         {error && (
           <>

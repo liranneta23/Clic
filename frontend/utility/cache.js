@@ -42,7 +42,14 @@ const get = async (key) => {
   }
 }
 
+const removeAllAsyncStorage = () => {
+  AsyncStorage.getAllKeys()
+    .then((keys) => AsyncStorage.multiRemove(keys))
+    .then(() => alert("You logged just out."))
+}
+
 export default {
   store,
   get,
+  removeAllAsyncStorage,
 }

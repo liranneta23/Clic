@@ -4,6 +4,7 @@ import { FlatList, StyleSheet, View } from "react-native"
 import AuthContext from "../auth/appContext"
 import authStorage from "../auth/storage"
 import Icon from "../components/Icon"
+import cache from "../../utility/cache"
 
 import ListItem from "../components/ListItem"
 import ListItemSeperator from "../components/ListItemSeperator"
@@ -35,6 +36,7 @@ const AccountScreen = ({ navigation }) => {
   const handleLogout = () => {
     setUser(null)
     authStorage.removeToken()
+    cache.removeAllAsyncStorage()
   }
   return (
     <Screen style={styles.screen}>

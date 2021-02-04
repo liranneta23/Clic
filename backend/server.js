@@ -10,6 +10,8 @@ const config = require("config")
 const listingsRoute = require("./routes/listingsRoute")
 const authRoute = require("./routes/authRoute")
 const registerRoute = require("./routes/registerRoute")
+const messagesRoute = require("./routes/messagesRoute")
+const myListingsRoute = require("./routes/myListingsRoute")
 
 app.use(cors())
 
@@ -25,6 +27,8 @@ require("dotenv/config")
 app.use("/api/listings", listingsRoute)
 app.use("/api/login", authRoute)
 app.use("/api/register", registerRoute)
+app.use("/api/messages", messagesRoute)
+app.use("/api/mylistings", myListingsRoute)
 
 const PORT = process.env.PORT || config.get("port")
 app.listen(PORT, () => {

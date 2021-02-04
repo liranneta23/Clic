@@ -1,8 +1,16 @@
 import { create } from "apisauce"
 import cache from "../utility/cache"
+import authStorage from "../app/auth/storage"
 
 const apiClient = create({
   baseURL: "http://192.168.43.233:9000/",
+})
+
+// This adds the x-auth-token
+apiClient.addAsyncRequestTransform(async (request) => {
+  const token = await authStorage.getToken()
+  if (!token) return
+  request.headers["x-auth-token"] = token
 })
 
 // Change the logic of getting to also store and retrieve cached data if available.

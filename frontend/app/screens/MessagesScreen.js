@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import { FlatList, StyleSheet, View } from "react-native"
 
 import ListItem from "../components/ListItem"
@@ -6,62 +6,66 @@ import ListItemSeperator from "../components/ListItemSeperator"
 import Screen from "../components/Screen"
 
 import ListItemDeleteAction from "../components/ListItemDeleteAction"
-
-const initialMessages = [
-  {
-    id: 1,
-    title: "What do you want to buy?",
-    description:
-      "I want to buy and dell a lot of things and get them to the whole wide world and it is so",
-    image: require("../assets/bonarhyme.jpg"),
-  },
-  {
-    id: 2,
-    title: "T2",
-    description: "D2",
-    image: require("../assets/bonarhyme.jpg"),
-  },
-]
+import useApi from "../components/custom-hooks/useApi"
+import AppActivityIndicator from "../components/AppActivityIndicator"
+import getMessagesApi from "../../api/messages"
+import AppMessages from "../components/AppMessages"
+import AppText from "../components/AppText"
+import AppButton from "../components/AppButton"
 
 const MessagesScreen = () => {
-  const [messages, setMessages] = useState(initialMessages)
   const [refresh, setRefresh] = useState(false)
 
+  const { data: messages, error, loading, request: getAllMessages } = useApi(
+    getMessagesApi.getMessages
+  )
+
+  useEffect(() => {
+    getAllMessages()
+  }, [messages])
+
+  // set to handle delete in the backend later...
   const handleDelete = (message) => {
-    const newMessages = messages.filter((m) => m.id !== message.id)
+    const newMessages = messages.filter((m) => m.dateTime !== message.dateTime)
     setMessages(newMessages)
   }
 
   return (
-    <Screen>
-      <FlatList
-        data={messages}
-        keyExtractor={(message) => message.id.toString()}
-        renderItem={({ item }) => (
-          <ListItem
-            title={item.title}
-            subTitle={item.description}
-            image={item.image}
-            onPress={() => console.log(item)}
-            renderRightActions={() => (
-              <ListItemDeleteAction onPress={() => handleDelete(item)} />
-            )}
+    <>
+      <AppActivityIndicator visible={loading} />
+      {messages.length === 0 && (
+        <>
+          <AppText>You have no messages at the moment. </AppText>
+          <AppButton
+            title="Refresh"
+            color="primary"
+            onPress={() => console.log(messages)}
           />
-        )}
-        ItemSeparatorComponent={() => <ListItemSeperator />}
-        refreshing={refresh}
-        onRefresh={() =>
-          setMessages([
-            {
-              id: 2,
-              title: "T2",
-              description: "D2",
-              image: require("../assets/bonarhyme.jpg"),
-            },
-          ])
-        }
-      />
-    </Screen>
+        </>
+      )}
+      {messages.length >= 1 && (
+        <Screen>
+          <FlatList
+            data={messages}
+            keyExtractor={(message) => message.id.toString()}
+            renderItem={({ item }) => (
+              <AppMessages
+                fromUser={item.fromUser.name}
+                message={item.content}
+                onPress={() => console.log(item)}
+                renderRightActions={() => (
+                  // This will be turned to a delete request to the backend
+                  <ListItemDeleteAction onPress={() => handleDelete(item)} />
+                )}
+              />
+            )}
+            ItemSeparatorComponent={() => <ListItemSeperator />}
+            refreshing={refresh}
+            onRefresh={() => getAllMessages()}
+          />
+        </Screen>
+      )}
+    </>
   )
 }
 
