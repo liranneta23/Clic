@@ -17,7 +17,7 @@ import { NavigationContainer, useNavigation } from "@react-navigation/native"
 import NetInfo, { useNetInfo } from "@react-native-community/netinfo"
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import jwtDecode from "jwt-decode"
-import AppLoading from "expo-app-loading"
+// import AppLoading from "expo-app-loading"
 
 import ViewImageScreen from "./app/screens/ViewImageScreen"
 import WelcomeScreen from "./app/screens/WelcomeScreen"

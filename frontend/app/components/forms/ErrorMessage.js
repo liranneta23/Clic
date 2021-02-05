@@ -3,15 +3,9 @@ import { StyleSheet } from "react-native"
 import { colors } from "../../config/colors"
 import AppText from "../AppText"
 
-const ErrorMessage = ({ error, visible }) => {
+const ErrorMessage = ({ error, visible, color = colors.danger }) => {
   if (!visible || !error) return null
-  return <AppText style={styles.error}>{error}</AppText>
+  return <AppText style={{ color: color }}>{error}</AppText>
 }
-
-const styles = StyleSheet.create({
-  error: {
-    color: colors.danger,
-  },
-})
 
 export default ErrorMessage

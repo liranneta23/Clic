@@ -15,6 +15,7 @@ Here we receive the arrays of images from the forms in our frontend.
           5. Then stores it in "public/assets" 
 
 */
+
 module.exports = async (req, res, next) => {
   const images = []
 

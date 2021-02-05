@@ -8,6 +8,7 @@ const {
   getAllListings,
   getSingleListing,
   addListing,
+  filterListings,
 } = require("../database/listings")
 const listingsMapper = require("../mappers/listingsMappers")
 
@@ -18,6 +19,7 @@ const {
 
 const validateWith = require("../middleware/validation")
 const imageResize = require("../middleware/imageResize")
+const authMiddlware = require("../middleware/auth")
 
 // Handles where the binaries should be kept, so as to be used as a reference when calling to the database
 const upload = multer({
@@ -41,6 +43,21 @@ router.get("/", (req, res) => {
   const listings = getAllListings()
   const resources = listings.map(listingsMapper)
   res.send(resources)
+})
+
+// Get /api/listings/:categoryId protected
+router.get("/:id", (req, res) => {
+  const listings = filterListings(
+    (listing) => listing.categoryId === parseInt(req.params.id)
+  )
+  if (!listings) {
+    res.status(400).send({
+      error: "Listing category not found ",
+    })
+  } else {
+    const resources = listings.map(listingsMapper)
+    res.send(resources)
+  }
 })
 
 // POST /api/listings

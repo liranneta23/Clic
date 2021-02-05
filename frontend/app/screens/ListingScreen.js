@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native"
+import { MaterialCommunityIcons } from "@expo/vector-icons"
 
 import Screen from "../components/Screen"
 import AppCard from "../components/AppCard"
@@ -17,23 +18,50 @@ import listingsApi from "../../api/listings"
 import AppText from "../components/AppText"
 import AppButton from "../components/AppButton"
 import AppActivityIndicator from "../components/AppActivityIndicator"
-import useApi from "../components/custom-hooks/useApi"
+import ErrorMessage from "../components/forms/ErrorMessage"
 
 const ListingScreen = ({ navigation }) => {
   const [refresh, setRefresh] = useState(false)
+  const [listings, setListings] = useState([])
+  const [error, setError] = useState(false)
+  const [loading, setLoading] = useState(false)
 
   // To use multiple times, do not destructure. just use a variable.
-  const { data: listings, error, loading, request: getAllListings } = useApi(
-    listingsApi.getListings
-  )
+  const getAllListings = async () => {
+    setLoading(true)
+    const result = await listingsApi.getListings()
+    setLoading(false)
+    if (result.problem) {
+      setError(true)
+    } else {
+      setError(false)
+      setListings(result.data)
+    }
+  }
 
   useEffect(() => {
     getAllListings()
-  }, [listings])
+  }, [])
+
+  const handleCategory = async (categoryId) => {
+    setLoading(true)
+    const result = await listingsApi.filterListings(categoryId)
+    setLoading(false)
+    if (result.problem) {
+      setError(true)
+    } else {
+      setError(false)
+      setListings(result.data)
+    }
+  }
 
   return (
     <>
       <AppActivityIndicator visible={loading} />
+      <ErrorMessage
+        error="An error occured. Unable to filter list."
+        visible={error}
+      />
       <Screen style={styles.screen}>
         {error && (
           <>
@@ -45,28 +73,32 @@ const ListingScreen = ({ navigation }) => {
             />
           </>
         )}
-        <ScrollView
-          horizontal
-          style={styles.scrollView}
-          contentContainerStyle={styles.contentContainerStyle}
-        >
-          {categories.map((item, key) => {
-            return (
-              // Flat List Item
-              <View style={{ flexDirection: "row" }} key={key}>
-                <TouchableOpacity>
-                  <AppText
-                    style={styles.text}
-                    onPress={() => console.log(item.label)}
-                  >
-                    {item.label}
-                  </AppText>
+        <View>
+          <ScrollView
+            horizontal
+            style={styles.scrollView}
+            contentContainerStyle={styles.contentContainerStyle}
+          >
+            {categories.map((item, key) => {
+              return (
+                // Flat List Item
+                <TouchableOpacity
+                  style={styles.category}
+                  key={key}
+                  onPress={() => handleCategory(item.value)}
+                >
+                  <MaterialCommunityIcons
+                    name={item.icon}
+                    color={item.backgroundColor}
+                    size={25}
+                  />
+                  <AppText style={styles.text}>{item.label}</AppText>
                 </TouchableOpacity>
-              </View>
-            )
-          })}
-        </ScrollView>
-        {listings && (
+              )
+            })}
+          </ScrollView>
+        </View>
+        {listings.length >= 1 && (
           <FlatList
             data={listings}
             keyExtractor={(listing) => listing.id.toString()}
@@ -85,6 +117,11 @@ const ListingScreen = ({ navigation }) => {
             )}
           />
         )}
+        {listings.length === 0 && (
+          <AppText style={{ color: colors.primary, marginTop: 10 }}>
+            No listings available in this category.
+          </AppText>
+        )}
       </Screen>
     </>
   )
@@ -98,9 +135,12 @@ const styles = StyleSheet.create({
     height: "10%",
   },
   text: {
-    color: colors.white,
+    color: colors.primary,
+    marginLeft: 5,
+  },
+  category: {
+    flexDirection: "row",
     padding: 10,
-    backgroundColor: colors.fancyGray,
   },
 })
 
