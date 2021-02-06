@@ -15,6 +15,7 @@ import CategoryPickerItem from "../components/CategoryPickerItem"
 import useLocation from "../components/custom-hooks/useLocation"
 import listingsApi from "../../api/listings"
 import UploadScreen from "./UploadScreen"
+import categories from "../config/categories"
 
 const validationSchema = Yup.object().shape({
   title: Yup.string().required().min(1).label("Title"),
@@ -24,47 +25,6 @@ const validationSchema = Yup.object().shape({
   images: Yup.array().min(1, "Please select atleast one image"),
 })
 
-const categories = [
-  {
-    label: "Funiture",
-    value: 1,
-    backgroundColor: "orange",
-    icon: "floor-lamp",
-  },
-  { label: "Cars", value: 2, backgroundColor: "#ed5499", icon: "car" },
-  { label: "Camera", value: 3, backgroundColor: "#333679", icon: "camera" },
-  {
-    label: "Games",
-    value: 4,
-    backgroundColor: "green",
-    icon: "gamepad-variant",
-  },
-  {
-    label: "Clothings",
-    value: 5,
-    backgroundColor: "indigo",
-    icon: "shoe-heel",
-  },
-  { label: "Sports", value: 6, backgroundColor: "blue", icon: "football" },
-  {
-    label: "Movies & Music",
-    value: 7,
-    backgroundColor: "maroon",
-    icon: "music",
-  },
-  {
-    label: "Books",
-    value: 8,
-    backgroundColor: "purple",
-    icon: "book-open-page-variant",
-  },
-  {
-    label: "others",
-    value: 9,
-    backgroundColor: "gray",
-    icon: "file-presentation-box",
-  },
-]
 const ListingEditScreen = () => {
   const location = useLocation()
   const [uploadVisible, setUploadVisible] = useState(false)

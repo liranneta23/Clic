@@ -19,6 +19,7 @@ const AppFormField = ({ name, width, ...otherProps }) => {
         value={values[name]}
         onBlur={() => setFieldTouched(name)}
         width={width}
+        flexDirection="column"
         {...otherProps}
       />
       <ErrorMessage error={errors[name]} visible={touched[name]} />
