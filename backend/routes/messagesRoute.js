@@ -13,7 +13,7 @@ router.get("/", authMiddleware, (req, res) => {
 
   const mapUser = (userId) => {
     const user = userDatabase.getUserById(userId)
-    return { id: user.id, name: user.name }
+    return { id: user.id, name: user.name, phone: user.phoneNumber }
   }
 
   const resources = messages.map((message) => ({

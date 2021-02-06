@@ -75,6 +75,7 @@ const ListingEditScreen = () => {
           width="50%"
           name="price"
           placeholder="Price"
+          flexDirection="column"
         />
         <AppFormPicker
           items={categories}
@@ -90,6 +91,7 @@ const ListingEditScreen = () => {
           name="description"
           numberOfLines={3}
           placeholder="Description"
+          flexDirection="column"
         />
         <SubmitButton title="Post" />
       </AppForm>

@@ -4,12 +4,14 @@ const users = [
     name: "Bonaventure",
     email: "bonarhyme@gmail.com",
     password: "##Bonaventure1",
+    phoneNumber: "+234816767676",
   },
   {
     id: 2,
     name: "John",
     email: "john@domain.com",
     password: "##John1",
+    phoneNumber: "+234808754543",
   },
 ]
 
