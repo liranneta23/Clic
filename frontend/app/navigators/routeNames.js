@@ -9,4 +9,5 @@ export default Object.freeze({
   FEED: "Feed",
   WELCOME_SCREEN: "WelcomeScreen",
   LISTINGS: "Listings",
+  VIEW_IMAGE_SCREEN: "ViewImageScreen",
 })

@@ -4,6 +4,7 @@ import client from "./client"
 const endPoint = "/api/listings"
 const getListings = () => client.get(endPoint)
 const filterListings = (id) => client.get(`/api/listings/${id}`)
+const incrementCounter = (id) => client.put(`/api/listings/${id}`)
 
 const addListing = (listing, onUploadProgress) => {
   const data = new FormData()
@@ -31,4 +32,5 @@ export default {
   addListing,
   getListings,
   filterListings,
+  incrementCounter,
 }

@@ -3,10 +3,12 @@ const router = express.Router()
 const Joi = require("joi")
 const multer = require("multer")
 const config = require("config")
+const authMiddleware = require("../middleware/auth")
 
 const {
   getAllListings,
   getSingleListing,
+
   addListing,
   filterListings,
 } = require("../database/listings")
@@ -43,6 +45,14 @@ router.get("/", (req, res) => {
   const listings = getAllListings()
   const resources = listings.map(listingsMapper)
   res.send(resources)
+})
+
+router.put("/:id", authMiddleware, (req, res) => {
+  const result = getSingleListing(parseInt(req.params.id))
+  if (req.user.userId !== result.userId) {
+    result.seenCounter++
+  }
+  res.send(result)
 })
 
 // Get /api/listings/:categoryId protected

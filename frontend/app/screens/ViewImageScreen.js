@@ -1,9 +1,15 @@
-import React from "react"
+import React, { useEffect, useState } from "react"
 import { Image, StyleSheet, View } from "react-native"
 import { MaterialCommunityIcons } from "@expo/vector-icons"
 import { colors } from "../config/colors"
+import Swipeable from "react-native-gesture-handler/Swipeable"
+import Icon from "../components/Icon"
 
-const ViewImageScreen = () => {
+const ViewImageScreen = ({ route }) => {
+  const { images, user } = route.params
+
+  const [index, setIndex] = useState(0)
+
   return (
     <View style={styles.container}>
       <View style={styles.closeIcon}>
@@ -16,10 +22,11 @@ const ViewImageScreen = () => {
           size={35}
         />
       </View>
+
       <Image
         resizeMode="contain"
         style={styles.image}
-        source={{ uri: "http://192.168.43.233:9000/assets/camera2_full.jpg" }}
+        source={{ uri: images[index].url }}
       />
     </View>
   )

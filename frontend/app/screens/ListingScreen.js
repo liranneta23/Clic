@@ -25,6 +25,7 @@ const ListingScreen = ({ navigation }) => {
   const [listings, setListings] = useState([])
   const [error, setError] = useState(false)
   const [loading, setLoading] = useState(false)
+  const [count, setCount] = useState(0)
 
   // To use multiple times, do not destructure. just use a variable.
   const getAllListings = async () => {
@@ -36,6 +37,12 @@ const ListingScreen = ({ navigation }) => {
     } else {
       setError(false)
       setListings(result.data)
+    }
+  }
+  const handleSeenCounter = async (id) => {
+    const result = await listingsApi.incrementCounter(id)
+    if (result.ok) {
+      setCount(result.data.seenCounter)
     }
   }
 
@@ -110,9 +117,13 @@ const ListingScreen = ({ navigation }) => {
                 subTitle={"$" + item.price}
                 image={item.images[0].url}
                 thumbnail={item.images[0].thumbnailUrl}
-                onPress={() =>
-                  navigation.navigate(routeNames.LISTING_DETAILS, item)
-                }
+                onPress={() => (
+                  navigation.navigate(routeNames.LISTING_DETAILS, {
+                    listing: item,
+                    count: count,
+                  }),
+                  handleSeenCounter(item.id.toString())
+                )}
               />
             )}
           />

@@ -15,6 +15,7 @@ const listings = [
       latitude: 37.78825,
       longitude: -122.4324,
     },
+    seenCounter: 1,
   },
   {
     id: 3,
@@ -27,6 +28,7 @@ const listings = [
       latitude: 37.78825,
       longitude: -122.4324,
     },
+    seenCounter: 1,
   },
   {
     id: 1,
@@ -45,6 +47,7 @@ const listings = [
       latitude: 37.78825,
       longitude: -122.4324,
     },
+    seenCounter: 1,
   },
   {
     id: 2,
@@ -57,6 +60,7 @@ const listings = [
       latitude: 37.78825,
       longitude: -122.4324,
     },
+    seenCounter: 1,
   },
   {
     id: 102,
@@ -69,6 +73,7 @@ const listings = [
       latitude: 37.78825,
       longitude: -122.4324,
     },
+    seenCounter: 1,
   },
   {
     id: 101,
@@ -81,6 +86,7 @@ const listings = [
       latitude: 37.78825,
       longitude: -122.4324,
     },
+    seenCounter: 1,
   },
   {
     id: 4,
@@ -94,6 +100,7 @@ const listings = [
       latitude: 37.78825,
       longitude: -122.4324,
     },
+    seenCounter: 1,
   },
   {
     id: 6,
@@ -106,6 +113,7 @@ const listings = [
       latitude: 37.78825,
       longitude: -122.4324,
     },
+    seenCounter: 1,
   },
 ]
 
