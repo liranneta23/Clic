@@ -5,6 +5,7 @@ import {
   ScrollView,
   TouchableOpacity,
   View,
+  TextInput,
 } from "react-native"
 import { MaterialCommunityIcons } from "@expo/vector-icons"
 
@@ -19,6 +20,7 @@ import AppText from "../components/AppText"
 import AppButton from "../components/AppButton"
 import AppActivityIndicator from "../components/AppActivityIndicator"
 import ErrorMessage from "../components/forms/ErrorMessage"
+import defaultStyles from "../config/styles"
 
 const ListingScreen = ({ navigation }) => {
   const [refresh, setRefresh] = useState(false)
@@ -26,6 +28,7 @@ const ListingScreen = ({ navigation }) => {
   const [error, setError] = useState(false)
   const [loading, setLoading] = useState(false)
   const [count, setCount] = useState(0)
+  const [keyword, setKeyword] = useState("")
 
   // To use multiple times, do not destructure. just use a variable.
   const getAllListings = async () => {
@@ -43,6 +46,19 @@ const ListingScreen = ({ navigation }) => {
     const result = await listingsApi.incrementCounter(id)
     if (result.ok) {
       setCount(result.data.seenCounter)
+    }
+  }
+
+  // search listings
+  const searchListings = async (keyword) => {
+    setLoading(true)
+    const result = await listingsApi.searchListings(keyword)
+    setLoading(false)
+    if (result.problem) {
+      setError(true)
+    } else {
+      setError(false)
+      setListings(result.data)
     }
   }
 
@@ -81,6 +97,20 @@ const ListingScreen = ({ navigation }) => {
           </>
         )}
         <View>
+          <View style={styles.searchContainer}>
+            <TextInput
+              style={{
+                flex: 1,
+                paddingLeft: 10,
+              }}
+              onChangeText={(text) => setKeyword(text)}
+            />
+            <MaterialCommunityIcons
+              name="search-web"
+              size={25}
+              onPress={() => searchListings(keyword)}
+            />
+          </View>
           <ScrollView
             horizontal
             style={styles.scrollView}
@@ -152,6 +182,14 @@ const styles = StyleSheet.create({
   category: {
     flexDirection: "row",
     padding: 10,
+  },
+  searchContainer: {
+    height: 30,
+    justifyContent: "center",
+    borderRadius: 10,
+    borderColor: colors.black,
+    borderWidth: 3,
+    flexDirection: "row",
   },
 })
 

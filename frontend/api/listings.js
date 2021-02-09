@@ -1,10 +1,11 @@
 import client from "./client"
 
 // Get all listings
-const endPoint = "/api/listings"
+const endPoint = "/api/listings/"
 const getListings = () => client.get(endPoint)
 const filterListings = (id) => client.get(`/api/listings/${id}`)
 const incrementCounter = (id) => client.put(`/api/listings/${id}`)
+const searchListings = (keyword) => client.get(`/api/listings/?name=${keyword}`)
 
 const addListing = (listing, onUploadProgress) => {
   const data = new FormData()
@@ -33,4 +34,5 @@ export default {
   getListings,
   filterListings,
   incrementCounter,
+  searchListings,
 }

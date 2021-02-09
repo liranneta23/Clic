@@ -49,6 +49,7 @@ import AppMessages from "./app/components/AppMessages"
 import AppMyListings from "./app/components/AppMyListings"
 import MyListingsScreen from "./app/screens/MyListingsScreen"
 import Slider from "./app/components/Slider"
+import Rating from "./app/components/Ratings"
 
 // Replace AppNavigator with AuthNavigator to see the login, registration and welcome screen. Try it!!!
 export default function App() {

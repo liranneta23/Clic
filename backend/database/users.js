@@ -5,6 +5,8 @@ const users = [
     email: "bonarhyme@gmail.com",
     password: "##Bonaventure1",
     phoneNumber: "+234816767676",
+    rating: 4.5,
+    numReview: 19,
   },
   {
     id: 2,
@@ -12,6 +14,8 @@ const users = [
     email: "john@domain.com",
     password: "##John1",
     phoneNumber: "+234808754543",
+    rating: 2,
+    numReview: 44,
   },
 ]
 

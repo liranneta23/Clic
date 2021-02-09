@@ -41,12 +41,24 @@ const schema = {
 }
 
 // GET /api/listings
+// Also query strings for search
 router.get("/", (req, res) => {
-  const listings = getAllListings()
-  const resources = listings.map(listingsMapper)
-  res.send(resources)
+  if (req.query.name) {
+    const word = req.query.name.toString()
+    const keyword = new RegExp(word, "i")
+
+    const listings = filterListings((listing) => listing.title.match(keyword))
+
+    const resources = listings.map(listingsMapper)
+    res.send(resources)
+  } else {
+    const listings = getAllListings()
+    const resources = listings.map(listingsMapper)
+    res.send(resources)
+  }
 })
 
+// Add seen counter
 router.put("/:id", authMiddleware, (req, res) => {
   const result = getSingleListing(parseInt(req.params.id))
   if (req.user.userId !== result.userId) {

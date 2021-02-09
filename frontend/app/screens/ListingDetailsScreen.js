@@ -17,6 +17,7 @@ import { colors } from "../config/colors"
 import AppButton from "../components/AppButton"
 import routeNames from "../navigators/routeNames"
 import Slider from "../components/Slider"
+import Rating from "../components/Ratings"
 
 const ListingDetailsScreen = ({ route }) => {
   const { listing, count } = route.params
@@ -60,6 +61,10 @@ const ListingDetailsScreen = ({ route }) => {
           <AppText style={{ fontWeight: "700" }}>
             Seller: {listing.seller.name}
           </AppText>
+          <Rating
+            value={listing.seller.rating}
+            numReview={listing.seller.numReview}
+          />
           <View style={styles.reachSeller}>
             <Icon
               size={50}
