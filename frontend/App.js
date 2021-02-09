@@ -48,6 +48,7 @@ import authStorage from "./app/auth/storage"
 import AppMessages from "./app/components/AppMessages"
 import AppMyListings from "./app/components/AppMyListings"
 import MyListingsScreen from "./app/screens/MyListingsScreen"
+import Slider from "./app/components/Slider"
 
 // Replace AppNavigator with AuthNavigator to see the login, registration and welcome screen. Try it!!!
 export default function App() {
@@ -78,11 +79,13 @@ export default function App() {
   }, [])
 
   return (
-    <AuthContext.Provider value={{ user, setUser }}>
-      <OfflineNotice />
-      <NavigationContainer theme={navigationTheme}>
-        {user ? <AppNavigator /> : <AuthNavigator />}
-      </NavigationContainer>
-    </AuthContext.Provider>
+    <>
+      <AuthContext.Provider value={{ user, setUser }}>
+        <OfflineNotice />
+        <NavigationContainer theme={navigationTheme}>
+          {user ? <AppNavigator /> : <AuthNavigator />}
+        </NavigationContainer>
+      </AuthContext.Provider>
+    </>
   )
 }

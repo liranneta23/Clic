@@ -5,6 +5,7 @@ import {
   Linking,
   Platform,
   TouchableOpacity,
+  ScrollView,
 } from "react-native"
 import { Image } from "react-native-expo-image-cache"
 import { useNavigation } from "@react-navigation/native"
@@ -15,6 +16,7 @@ import ListItem from "../components/ListItem"
 import { colors } from "../config/colors"
 import AppButton from "../components/AppButton"
 import routeNames from "../navigators/routeNames"
+import Slider from "../components/Slider"
 
 const ListingDetailsScreen = ({ route }) => {
   const { listing, count } = route.params
@@ -39,23 +41,9 @@ const ListingDetailsScreen = ({ route }) => {
   // }, [])
 
   return (
-    <View>
-      <TouchableOpacity
-        onPress={() =>
-          navigation.navigate(routeNames.VIEW_IMAGE_SCREEN, {
-            images: listing.images,
-            user: listing.userId,
-          })
-        }
-      >
-        <Image
-          style={styles.image}
-          uri={listing.images[0].url}
-          preview={{ uri: listing.images[0].url }}
-          tint="light"
-          Icon
-        />
-      </TouchableOpacity>
+    <ScrollView>
+      <Slider images={listing.images} height={300} />
+
       <View style={styles.detailsContainer}>
         <AppText style={styles.title}>{listing.title}</AppText>
         <View style={styles.seen}>
@@ -88,6 +76,21 @@ const ListingDetailsScreen = ({ route }) => {
               marginRight={8}
             />
             <Icon
+              size={50}
+              name="whatsapp"
+              backgroundColor={colors.primary}
+              onPress={() =>
+                Linking.openURL(
+                  `whatsapp://send?text=${
+                    "Hello, " +
+                    listing.seller.name +
+                    `. I am Interested in your ${listing.title}, listed on Clic.`
+                  }&phone=${listing.seller.phone}`
+                )
+              }
+              marginRight={8}
+            />
+            <Icon
               marginRight={20}
               name="google-maps"
               size={50}
@@ -108,7 +111,7 @@ const ListingDetailsScreen = ({ route }) => {
           />
         </View>
       </View>
-    </View>
+    </ScrollView>
   )
 }
 const styles = StyleSheet.create({
@@ -118,10 +121,6 @@ const styles = StyleSheet.create({
   },
   detailsContainer: {
     padding: 20,
-  },
-  image: {
-    width: "100%",
-    height: 300,
   },
   price: {
     color: colors.secondary,
