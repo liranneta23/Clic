@@ -34,6 +34,7 @@ const schema = {
   description: Joi.string().allow(""),
   price: Joi.number().required().min(1),
   categoryId: Joi.number().required().min(1),
+  subCategoryId: Joi.number().required().min(1),
   location: Joi.object({
     latitude: Joi.number().required(),
     latitude: Joi.number().required(),
@@ -70,11 +71,12 @@ router.put("/:id", authMiddleware, (req, res) => {
 // Get /api/listings/:categoryId protected
 router.get("/:id", (req, res) => {
   const listings = filterListings(
-    (listing) => listing.categoryId === parseInt(req.params.id)
+    (listing) => listing.categoryId == parseInt(req.params.id)
   )
-  if (!listings) {
-    res.status(400).send({
-      error: "Listing category not found ",
+
+  if (listings.length <= 0) {
+    res.send({
+      error: "No items found in this category",
     })
   } else {
     const resources = listings.map(listingsMapper)
@@ -86,16 +88,19 @@ router.get("/:id", (req, res) => {
 
 router.post(
   "/",
+  authMiddleware,
   [
     upload.array("images", config.get("maxImageCount")),
     validateWith(schema),
     imageResize,
   ],
+
   async (req, res) => {
     const listing = {
       title: req.body.title,
       price: parseFloat(req.body.price),
       categoryId: parseInt(req.body.categoryId),
+      subCategoryId: parseInt(req.body.categoryId),
       description: req.body.description,
     }
     listing.images = req.images.map((fileName) => ({

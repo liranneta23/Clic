@@ -3,6 +3,10 @@ node_modules/**/*
 node_modules
 node_modules/
 ./backend/node_modules
+/backend/public
+./backend/public
+./backend/uploads
+/backend/uploads
 /node_modules
 .expo/*
 ./frontend/.expo

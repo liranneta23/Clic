@@ -33,7 +33,7 @@ const categories = [
     icon: "book-open-page-variant",
   },
   {
-    label: "others",
+    label: "Services",
     value: 9,
     backgroundColor: "gray",
     icon: "file-presentation-box",

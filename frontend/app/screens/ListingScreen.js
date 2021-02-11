@@ -81,21 +81,7 @@ const ListingScreen = ({ navigation }) => {
   return (
     <>
       <AppActivityIndicator visible={loading} />
-      <ErrorMessage
-        error="An error occured. Unable to filter list."
-        visible={error}
-      />
       <Screen style={styles.screen}>
-        {error && (
-          <>
-            <AppText>An error occured. Data fetched from cache.</AppText>
-            <AppButton
-              title="Retry"
-              color="primary"
-              onPress={() => getAllListings()}
-            />
-          </>
-        )}
         <View>
           <View style={styles.searchContainer}>
             <TextInput
@@ -118,6 +104,9 @@ const ListingScreen = ({ navigation }) => {
             style={styles.scrollView}
             contentContainerStyle={styles.contentContainerStyle}
           >
+            <TouchableOpacity onPress={() => getAllListings()}>
+              <AppText style={styles.all}>All</AppText>
+            </TouchableOpacity>
             {categories.map((item, key) => {
               return (
                 // Flat List Item
@@ -137,7 +126,7 @@ const ListingScreen = ({ navigation }) => {
             })}
           </ScrollView>
         </View>
-        {listings.length >= 1 && (
+        {listings.length >= 1 ? (
           <FlatList
             data={listings}
             keyExtractor={(listing) => listing.id.toString()}
@@ -159,8 +148,7 @@ const ListingScreen = ({ navigation }) => {
               />
             )}
           />
-        )}
-        {listings.length === 0 && (
+        ) : (
           <AppText style={{ color: colors.primary, marginTop: 10 }}>
             No listings available in this category.
           </AppText>
@@ -184,6 +172,12 @@ const styles = StyleSheet.create({
   category: {
     flexDirection: "row",
     padding: 10,
+  },
+  all: {
+    flexDirection: "row",
+    padding: 10,
+    fontWeight: "700",
+    color: colors.primary,
   },
   searchContainer: {
     height: 40,

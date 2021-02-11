@@ -55,6 +55,7 @@ import Rating from "./app/components/Ratings"
 export default function App() {
   const [user, setUser] = useState()
   const [isReady, setIsReady] = useState(false)
+  const [subCategory, setSubCategory] = useState(0)
 
   const restoreToken = async () => {
     const token = await authStorage.getToken()
@@ -81,7 +82,9 @@ export default function App() {
 
   return (
     <>
-      <AuthContext.Provider value={{ user, setUser }}>
+      <AuthContext.Provider
+        value={{ user, setUser, subCategory, setSubCategory }}
+      >
         <OfflineNotice />
         <NavigationContainer theme={navigationTheme}>
           {user ? <AppNavigator /> : <AuthNavigator />}

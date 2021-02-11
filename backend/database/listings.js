@@ -10,6 +10,7 @@ const listings = [
     images: [{ fileName: "jacket1" }],
     price: 100,
     categoryId: 5,
+    subCategoryId: 1,
     userId: 1,
     location: {
       latitude: 37.78825,
@@ -22,6 +23,7 @@ const listings = [
     title: "Gray couch in a great condition",
     images: [{ fileName: "couch2" }],
     categoryId: 1,
+    subCategoryId: 2,
     price: 1200,
     userId: 2,
     location: {
@@ -42,6 +44,7 @@ const listings = [
     ],
     price: 1000,
     categoryId: 1,
+    subCategoryId: 2,
     userId: 1,
     location: {
       latitude: 37.78825,
@@ -54,6 +57,7 @@ const listings = [
     title: "Designer wear shoes",
     images: [{ fileName: "shoes1" }],
     categoryId: 5,
+    subCategoryId: 5,
     price: 100,
     userId: 2,
     location: {
@@ -68,6 +72,7 @@ const listings = [
     images: [{ fileName: "camera1" }],
     price: 300,
     categoryId: 3,
+    subCategoryId: 5,
     userId: 1,
     location: {
       latitude: 37.78825,
@@ -81,6 +86,7 @@ const listings = [
     images: [{ fileName: "camera2" }],
     price: 350,
     categoryId: 3,
+    subCategoryId: 5,
     userId: 1,
     location: {
       latitude: 37.78825,
@@ -96,6 +102,7 @@ const listings = [
     categoryId: 1,
     price: 950,
     userId: 2,
+    subCategoryId: 2,
     location: {
       latitude: 37.78825,
       longitude: -122.4324,
@@ -109,6 +116,7 @@ const listings = [
     categoryId: 5,
     price: 50,
     userId: 2,
+    subCategoryId: 5,
     location: {
       latitude: 37.78825,
       longitude: -122.4324,

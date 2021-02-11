@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react"
-import { StyleSheet } from "react-native"
+import { ScrollView, StyleSheet } from "react-native"
 import * as Yup from "yup"
 
 import Screen from "../components/Screen"
@@ -16,12 +16,15 @@ import useLocation from "../components/custom-hooks/useLocation"
 import listingsApi from "../../api/listings"
 import UploadScreen from "./UploadScreen"
 import categories from "../config/categories"
+import SubAppFormPicker from "../components/forms/subCategories/SupAppFormPicker"
+import subCategories from "../config/subCategories"
 
 const validationSchema = Yup.object().shape({
   title: Yup.string().required().min(1).label("Title"),
   price: Yup.number().required().min(1).max(10000).label("Price"),
   description: Yup.string().label("Description"),
   category: Yup.object().required().nullable().label("Category"),
+  subCategory: Yup.object().required().nullable().label("CategoryId"),
   images: Yup.array().min(1, "Please select atleast one image"),
 })
 
@@ -43,59 +46,67 @@ const ListingEditScreen = () => {
 
     if (!result.ok) {
       setUploadVisible(false)
-      return alert("Unable to save the listing. Please try again.")
+      return alert(result.originalError)
     }
 
     resetForm()
   }
 
   return (
-    <Screen style={styles.container}>
-      <UploadScreen
-        onAnimationFinish={() => setUploadVisible(false)}
-        progress={progress}
-        visible={uploadVisible}
-      />
-      <AppForm
-        initialValues={{
-          title: "",
-          price: "",
-          description: "",
-          category: null,
-          images: [],
-        }}
-        onSubmit={handleSubmit}
-        validationSchema={validationSchema}
-      >
-        <AppFormImagePicker name="images" />
-        <AppFormField maxLength={255} name="title" placeholder="Title" />
-        <AppFormField
-          keyboardType="numeric"
-          maxLength={8}
-          width="50%"
-          name="price"
-          placeholder="Price"
-          flexDirection="column"
+    <ScrollView>
+      <Screen style={styles.container}>
+        <UploadScreen
+          onAnimationFinish={() => setUploadVisible(false)}
+          progress={progress}
+          visible={uploadVisible}
         />
-        <AppFormPicker
-          items={categories}
-          name="category"
-          numberOfColumns={3}
-          PickerItemComponent={CategoryPickerItem}
-          placeholder="Category"
-          width="50%"
-        />
-        <AppFormField
-          maxLength={255}
-          multiline
-          name="description"
-          numberOfLines={3}
-          placeholder="Description"
-          flexDirection="column"
-        />
-        <SubmitButton title="Post" />
-      </AppForm>
-    </Screen>
+        <AppForm
+          initialValues={{
+            title: "",
+            price: "",
+            description: "",
+            category: null,
+            subCategory: null,
+            images: [],
+          }}
+          onSubmit={handleSubmit}
+          validationSchema={validationSchema}
+        >
+          <AppFormImagePicker name="images" />
+          <AppFormField maxLength={255} name="title" placeholder="Title" />
+          <AppFormField
+            keyboardType="numeric"
+            maxLength={8}
+            width="50%"
+            name="price"
+            placeholder="Price"
+            flexDirection="column"
+          />
+          <AppFormPicker
+            items={categories}
+            name="category"
+            numberOfColumns={3}
+            PickerItemComponent={CategoryPickerItem}
+            placeholder="Category"
+            width="50%"
+          />
+          <SubAppFormPicker
+            name="subCategory"
+            placeholder="Sub-category"
+            width="55%"
+          />
+          <AppFormField
+            maxLength={255}
+            multiline
+            name="description"
+            numberOfLines={3}
+            placeholder="Description"
+            flexDirection="column"
+          />
+          <SubmitButton title="Post" />
+        </AppForm>
+      </Screen>
+    </ScrollView>
   )
 }
 
