@@ -104,10 +104,12 @@ const ListingScreen = ({ navigation }) => {
                 paddingLeft: 10,
               }}
               onChangeText={(text) => setKeyword(text)}
+              returnKeyType="search"
+              onSubmitEditing={() => searchListings(keyword)}
             />
             <MaterialCommunityIcons
               name="search-web"
-              size={25}
+              size={35}
               onPress={() => searchListings(keyword)}
             />
           </View>
@@ -184,7 +186,7 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   searchContainer: {
-    height: 30,
+    height: 40,
     justifyContent: "center",
     borderRadius: 10,
     borderColor: colors.black,
