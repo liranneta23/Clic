@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   View,
   TextInput,
+  Modal,
 } from "react-native"
 import { MaterialCommunityIcons } from "@expo/vector-icons"
 
@@ -14,6 +15,7 @@ import AppCard from "../components/AppCard"
 import { colors } from "../config/colors"
 import routeNames from "../navigators/routeNames"
 import categories from "../config/categories"
+import subCategories from "../config/subCategories"
 
 import listingsApi from "../../api/listings"
 import AppText from "../components/AppText"
@@ -26,9 +28,14 @@ const ListingScreen = ({ navigation }) => {
   const [refresh, setRefresh] = useState(false)
   const [listings, setListings] = useState([])
   const [error, setError] = useState(false)
+  const [errorMessage, setErrorMessage] = useState("")
   const [loading, setLoading] = useState(false)
   const [count, setCount] = useState(0)
   const [keyword, setKeyword] = useState("")
+  const [category, setCategory] = useState(0)
+  const [subCategory, setSubCategory] = useState(0)
+  const [isSubCategories, setIsSubCategories] = useState([])
+  const [hidden, setHidden] = useState(false)
 
   // To use multiple times, do not destructure. just use a variable.
   const getAllListings = async () => {
@@ -58,6 +65,7 @@ const ListingScreen = ({ navigation }) => {
       setError(true)
     } else {
       setError(false)
+      setErrorMessage(result.data.error)
       setListings(result.data)
     }
   }
@@ -70,14 +78,42 @@ const ListingScreen = ({ navigation }) => {
     setLoading(true)
     const result = await listingsApi.filterListings(categoryId)
     setLoading(false)
+
     if (result.problem) {
       setError(true)
     } else {
       setError(false)
+      setCategory(categoryId)
+      setHidden(false)
+      setErrorMessage(result.data.error)
       setListings(result.data)
     }
   }
 
+  // Handle sub categories
+  const handleSubCategory = () => {
+    //   Find and filter
+    const subCategoriesList = subCategories.find(
+      (item) => item.value === category
+    )
+    if (subCategoriesList) {
+      setIsSubCategories(subCategoriesList.subCategories)
+    } else {
+      setIsSubCategories([])
+    }
+  }
+
+  const filterSubCategory = async () => {
+    const result = await listingsApi.filterListingsSub(category, subCategory)
+    if (result.problem) {
+      setError(true)
+      // console.log(result.data.error)
+    } else {
+      setError(false)
+      setListings(result.data)
+      setErrorMessage(result.data.error)
+    }
+  }
   return (
     <>
       <AppActivityIndicator visible={loading} />
@@ -113,7 +149,10 @@ const ListingScreen = ({ navigation }) => {
                 <TouchableOpacity
                   style={styles.category}
                   key={key}
-                  onPress={() => handleCategory(item.value)}
+                  onPress={() => {
+                    handleCategory(item.value)
+                    handleSubCategory()
+                  }}
                 >
                   <MaterialCommunityIcons
                     name={item.icon}
@@ -125,6 +164,32 @@ const ListingScreen = ({ navigation }) => {
               )
             })}
           </ScrollView>
+
+          {hidden === false && (
+            <ScrollView
+              horizontal
+              style={styles.scrollView}
+              contentContainerStyle={styles.contentContainerStyle}
+            >
+              {isSubCategories.length !== 0 &&
+                isSubCategories.map((item, key) => {
+                  return (
+                    // Flat List Item
+                    <TouchableOpacity
+                      style={styles.category}
+                      key={key}
+                      onPress={() => {
+                        setHidden(true)
+                        setSubCategory(item.value)
+                        filterSubCategory()
+                      }}
+                    >
+                      <AppText style={styles.text}>{item.label}</AppText>
+                    </TouchableOpacity>
+                  )
+                })}
+            </ScrollView>
+          )}
         </View>
         {listings.length >= 1 ? (
           <FlatList
@@ -150,7 +215,7 @@ const ListingScreen = ({ navigation }) => {
           />
         ) : (
           <AppText style={{ color: colors.primary, marginTop: 10 }}>
-            No listings available in this category.
+            {errorMessage}
           </AppText>
         )}
       </Screen>
@@ -161,9 +226,6 @@ const styles = StyleSheet.create({
   screen: {
     padding: 10,
     backgroundColor: colors.lightGray,
-  },
-  scrollView: {
-    height: "10%",
   },
   text: {
     color: colors.primary,

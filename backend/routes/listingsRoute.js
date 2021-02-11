@@ -68,7 +68,7 @@ router.put("/:id", authMiddleware, (req, res) => {
   res.send(result)
 })
 
-// Get /api/listings/:categoryId protected
+// Get categories /api/listings/:categoryId protected
 router.get("/:id", (req, res) => {
   const listings = filterListings(
     (listing) => listing.categoryId == parseInt(req.params.id)
@@ -81,6 +81,30 @@ router.get("/:id", (req, res) => {
   } else {
     const resources = listings.map(listingsMapper)
     res.send(resources)
+  }
+})
+
+// Get sub categories /api/listings/sub/:id/:subcategoryId protected
+router.get("/sub/:id/:sub", (req, res) => {
+  const listingConfirm = filterListings(
+    (listing) => listing.categoryId == parseInt(req.params.id)
+  )
+  if (listingConfirm.length <= 0) {
+    res.status(404).send({
+      error: "No items found in the category of this subcategory",
+    })
+  } else {
+    const listings = listingConfirm.filter(
+      (listing) => listing.subCategoryId == parseInt(req.params.sub)
+    )
+    if (listings.length <= 0) {
+      res.send({
+        error: "No items found in this subcategory.",
+      })
+    } else {
+      const resources = listings.map(listingsMapper)
+      res.send(resources)
+    }
   }
 })
 

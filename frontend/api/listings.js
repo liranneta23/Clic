@@ -6,6 +6,8 @@ const getListings = () => client.get(endPoint)
 const filterListings = (id) => client.get(`/api/listings/${id}`)
 const incrementCounter = (id) => client.put(`/api/listings/${id}`)
 const searchListings = (keyword) => client.get(`/api/listings/?name=${keyword}`)
+const filterListingsSub = (id, sub) =>
+  client.get(`/api/listings/sub/${id}/${sub}`)
 
 const addListing = (listing, onUploadProgress) => {
   const data = new FormData()
@@ -38,4 +40,5 @@ export default {
   filterListings,
   incrementCounter,
   searchListings,
+  filterListingsSub,
 }

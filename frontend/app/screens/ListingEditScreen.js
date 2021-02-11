@@ -18,6 +18,7 @@ import UploadScreen from "./UploadScreen"
 import categories from "../config/categories"
 import SubAppFormPicker from "../components/forms/subCategories/SupAppFormPicker"
 import subCategories from "../config/subCategories"
+import routeNames from "../navigators/routeNames"
 
 const validationSchema = Yup.object().shape({
   title: Yup.string().required().min(1).label("Title"),
@@ -28,7 +29,7 @@ const validationSchema = Yup.object().shape({
   images: Yup.array().min(1, "Please select atleast one image"),
 })
 
-const ListingEditScreen = () => {
+const ListingEditScreen = ({ navigation }) => {
   const location = useLocation()
   const [uploadVisible, setUploadVisible] = useState(false)
   const [progress, setProgress] = useState(0)
@@ -48,8 +49,10 @@ const ListingEditScreen = () => {
       setUploadVisible(false)
       return alert(result.originalError)
     }
-
-    resetForm()
+    if (result.ok) {
+      resetForm()
+      navigation.navigate(routeNames.LISTINGS)
+    }
   }
 
   return (
