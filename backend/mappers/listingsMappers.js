@@ -26,6 +26,7 @@ const listingsMapper = (listing) => {
       email: user.email,
       rating: user.rating,
       numReview: user.numReview,
+      reviews: user.reviews,
     }
   }
 

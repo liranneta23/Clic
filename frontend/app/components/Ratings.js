@@ -15,7 +15,7 @@ const Rating = ({
   return (
     <View>
       <View style={styles.rating}>
-        <Text style={styles.textSubHeading}>Ratings:</Text>
+        <Text style={styles.textSubHeading}>Rating:</Text>
         <View>
           {value >= 1 ? (
             <FontAwesome name="star" color={color} size={25} />
@@ -61,7 +61,9 @@ const Rating = ({
             <FontAwesome name="star-o" color={color} size={25} />
           )}
         </View>
-        <Text style={styles.users}>({numReview} users)</Text>
+        {numReview !== 0 && (
+          <Text style={styles.users}>({numReview} users)</Text>
+        )}
       </View>
       {/* <View>
         <View style={styles.rating}>

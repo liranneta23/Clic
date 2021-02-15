@@ -12,6 +12,7 @@ const authRoute = require("./routes/authRoute")
 const registerRoute = require("./routes/registerRoute")
 const messagesRoute = require("./routes/messagesRoute")
 const myListingsRoute = require("./routes/myListingsRoute")
+const reviewsRoute = require("./routes/reviewsRoute")
 
 app.use(cors())
 
@@ -29,6 +30,7 @@ app.use("/api/login", authRoute)
 app.use("/api/register", registerRoute)
 app.use("/api/messages", messagesRoute)
 app.use("/api/mylistings", myListingsRoute)
+app.use("/api/users/reviews", reviewsRoute)
 
 const PORT = process.env.PORT || config.get("port")
 app.listen(PORT, () => {
