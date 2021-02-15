@@ -18,7 +18,11 @@ export const useLocation = () => {
   }
 
   useEffect(() => {
+    let isMounted = true
     getLocation()
+    return () => {
+      isMounted = false
+    }
   }, [])
   return location
 }

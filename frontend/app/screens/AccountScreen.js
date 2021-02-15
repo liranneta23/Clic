@@ -20,14 +20,14 @@ const menuItems = [
     },
     targetScreen: "MyListings",
   },
-  {
-    title: "My Messages",
-    icon: {
-      name: "email",
-      backgoundColor: colors.secondary,
-    },
-    targetScreen: "Messages",
-  },
+  // {
+  //   title: "My Messages",
+  //   icon: {
+  //     name: "email",
+  //     backgoundColor: colors.secondary,
+  //   },
+  //   targetScreen: "Messages",
+  // },
 ]
 
 const AccountScreen = ({ navigation }) => {

@@ -71,7 +71,11 @@ const ListingScreen = ({ navigation }) => {
   }
 
   useEffect(() => {
+    let isMounted = true
     getAllListings()
+    return () => {
+      isMounted = false
+    }
   }, [])
 
   const handleCategory = async (categoryId) => {

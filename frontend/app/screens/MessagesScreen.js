@@ -21,7 +21,11 @@ const MessagesScreen = () => {
   )
 
   useEffect(() => {
+    let isMounted = true
     getAllMessages()
+    return () => {
+      isMounted = false
+    }
   }, [messages])
 
   // set to handle delete in the backend later...

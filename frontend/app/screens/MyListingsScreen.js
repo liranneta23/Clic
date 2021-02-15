@@ -18,8 +18,12 @@ const MyListingsScreen = () => {
   )
 
   useEffect(() => {
+    let isMounted = true
     getMyListings()
-  }, [myListings])
+    return () => {
+      isMounted = false
+    }
+  }, [])
 
   return (
     <>

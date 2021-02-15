@@ -77,7 +77,11 @@ export default function App() {
   //   )
 
   useEffect(() => {
+    let isMounted = true
     restoreToken()
+    return () => {
+      isMounted = false
+    }
   }, [])
 
   return (

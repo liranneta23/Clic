@@ -19,7 +19,11 @@ const ImageInput = ({ imageUri, setImageUriInImageInput }) => {
   }
 
   useEffect(() => {
+    let isMounted = true
     requestPermission()
+    return () => {
+      isMounted = false
+    }
   }, [])
 
   const selectImage = async () => {
