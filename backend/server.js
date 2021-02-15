@@ -3,9 +3,16 @@ const app = express()
 const cors = require("cors")
 const helmet = require("helmet")
 const compression = require("compression")
+const connectDB = require("./config/db")
 
 // handles config/filename.json
 const config = require("config")
+
+// handles .env file
+require("dotenv/config")
+
+// Database configuration
+// connectDB()
 
 const listingsRoute = require("./routes/listingsRoute")
 const authRoute = require("./routes/authRoute")
@@ -34,5 +41,5 @@ app.use("/api/users/reviews", reviewsRoute)
 
 const PORT = process.env.PORT || config.get("port")
 app.listen(PORT, () => {
-  console.log(`Server is running port ${PORT}...`)
+  console.log(`Server is running port ${process.env.PORT}...`)
 })
