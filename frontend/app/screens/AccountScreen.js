@@ -10,6 +10,7 @@ import ListItem from "../components/ListItem"
 import ListItemSeperator from "../components/ListItemSeperator"
 import Screen from "../components/Screen"
 import { colors } from "../config/colors"
+import routeNames from "../navigators/routeNames"
 
 const menuItems = [
   {
@@ -45,6 +46,7 @@ const AccountScreen = ({ navigation }) => {
           title={user.name}
           subTitle={user.email}
           image={require("../assets/bonarhyme.jpg")}
+          onPress={() => navigation.navigate(routeNames.USER_EDIT_SCREEN)}
         />
       </View>
       <View style={styles.container}>

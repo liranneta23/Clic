@@ -2,6 +2,7 @@ import * as SecureStore from "expo-secure-store"
 
 // This is used to store the user details in the app
 
+// Hide this key later
 const key = "authToken"
 
 const storeToken = async (authToken) => {

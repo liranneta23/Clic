@@ -49,6 +49,7 @@ const users = [
     ],
     rating: 3.5,
     numReview: 5,
+    userImage: "",
   },
   {
     id: 2,
@@ -76,6 +77,7 @@ const users = [
     ],
     rating: 4,
     numReview: 2,
+    userImage: "",
   },
 ]
 
