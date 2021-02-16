@@ -15,6 +15,8 @@ const AppFormImagePickerForUser = ({ name }) => {
   const { setFieldValue, values } = useFormikContext()
   const [imageUri, setImageUri] = useState()
 
+  const imageUris = values[name]
+
   const requestPermission = async () => {
     const result = await ImagePicker.requestCameraPermissionsAsync()
 
@@ -34,6 +36,7 @@ const AppFormImagePickerForUser = ({ name }) => {
       const result = await ImagePicker.launchCameraAsync()
       if (!result.cancelled) {
         setImageUri(result.uri)
+        setFieldValue(name, [result.uri])
       }
     } catch (error) {
       alert("An error occured. Failed to access images")

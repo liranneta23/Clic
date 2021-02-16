@@ -1,13 +1,16 @@
-import React, { useContext } from "react"
-import { ScrollView, Text, TextInput } from "react-native"
+import React, { useContext, useState } from "react"
+import { ScrollView, Text, TextInput, StyleSheet } from "react-native"
 import * as Yup from "yup"
 
 import AuthContext from "../auth/appContext"
 import { AppForm, AppFormField, SubmitButton } from "../components/forms"
 import tokenStorage from "../auth/storage"
+import updateUserApi from "../../api/users"
 
 import Screen from "../components/Screen"
 import AppFormImagePickerForUser from "../components/forms/AppFormImagePickerForUser"
+import UploadScreen from "./UploadScreen"
+import { colors } from "../config/colors"
 
 const validationSchema = Yup.object().shape({
   name: Yup.string().required().min(1).label("Name"),
@@ -20,40 +23,71 @@ const validationSchema = Yup.object().shape({
 const UserEditScreen = () => {
   const { user, setUser } = useContext(AuthContext)
 
+  const [uploadVisible, setUploadVisible] = useState(false)
+  const [progress, setProgress] = useState(0)
+
   const handleSubmit = async (userDetails) => {
-    console.log(userDetails)
+    // console.log(userDetails)
+    setUploadVisible(true)
+    const result = await updateUserApi.userUpdate(
+      {
+        ...userDetails,
+      },
+      (progressTime) => setProgress(progressTime)
+    )
+
+    if (!result.ok) {
+      setUploadVisible(false)
+      return alert(result.originalError)
+    }
+    // if (result.ok) {
+    //   resetForm()
+    // }
   }
 
   return (
     <ScrollView>
-      <AppForm
-        initialValues={{
-          name: user.name,
-          email: user.email,
-          image: [],
-          location: "",
-          phoneNumber: null,
-        }}
-        onSubmit={handleSubmit}
-        validationSchema={validationSchema}
-      >
-        <AppFormImagePickerForUser name="image" />
-        <AppFormField name="name" placeholder="Name" />
-        <AppFormField
-          name="email"
-          placeholder="Email"
-          keyboardType="email-address"
+      <Screen style={styles.container}>
+        <UploadScreen
+          onAnimationFinish={() => setUploadVisible(false)}
+          progress={progress}
+          visible={uploadVisible}
         />
-        <AppFormField
-          name="phoneNumber"
-          keyboardType="number-pad"
-          placeholder="Phone Number"
-        />
-        <AppFormField name="location" placeholder="Location" />
-        <SubmitButton title="Update" />
-      </AppForm>
+        <AppForm
+          initialValues={{
+            name: user.name,
+            email: user.email,
+            images: [],
+            location: "",
+            phoneNumber: null,
+          }}
+          onSubmit={handleSubmit}
+          validationSchema={validationSchema}
+        >
+          <AppFormImagePickerForUser name="images" />
+          <AppFormField name="name" placeholder="Name" />
+          <AppFormField
+            name="email"
+            placeholder="Email"
+            keyboardType="email-address"
+          />
+          <AppFormField
+            name="phoneNumber"
+            keyboardType="number-pad"
+            placeholder="Phone Number"
+          />
+          <AppFormField name="location" placeholder="Location" />
+          <SubmitButton title="Update" />
+        </AppForm>
+      </Screen>
     </ScrollView>
   )
 }
+const styles = StyleSheet.create({
+  container: {
+    backgroundColor: colors.white,
+    paddingHorizontal: 5,
+  },
+})
 
 export default UserEditScreen
