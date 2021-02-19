@@ -5,12 +5,11 @@ const reviewSchema = mongoose.Schema(
   {
     userId: {
       type: mongoose.Schema.Types.ObjectId,
-      required: true,
       ref: "User",
     },
-    name: { type: String, required: true },
-    rating: { type: Number, required: true },
-    comment: { type: String, required: true },
+    name: { type: String },
+    rating: { type: Number },
+    comment: { type: String },
   },
   {
     timestamps: true,
@@ -26,7 +25,6 @@ const userSchema = mongoose.Schema(
     email: {
       type: String,
       required: true,
-      unique: true,
     },
     password: {
       type: String,
@@ -34,7 +32,9 @@ const userSchema = mongoose.Schema(
     },
     phoneNumber: {
       type: String,
-      unique: true,
+    },
+    images: {
+      type: Array,
     },
     reviews: [reviewSchema],
   },

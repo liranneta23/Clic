@@ -12,7 +12,7 @@ const config = require("config")
 require("dotenv/config")
 
 // Database configuration
-// connectDB()
+connectDB()
 
 const listingsRoute = require("./routes/listingsRoute")
 const authRoute = require("./routes/authRoute")

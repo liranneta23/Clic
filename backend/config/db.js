@@ -17,5 +17,14 @@ const connectDB = async () => {
 // const Cat = mongoose.model("Cat", { name: String })
 // const kitty = new Cat({ name: "Zildjian" })
 // kitty.save().then(() => console.log("meow"))
+// const UserModel = require("../model/userModel")
+
+// const User = new UserModel({
+//   email: "bonarhyme@gmail.com",
+// })
+
+// User.save()
+//   .then((user) => console.log(user))
+//   .catch((error) => console.error(error + "HELLOOOOOOO"))
 
 module.exports = connectDB

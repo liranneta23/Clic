@@ -4,10 +4,11 @@ const Joi = require("joi")
 const multer = require("multer")
 const config = require("config")
 const authMiddleware = require("../middleware/auth")
+const bcrypt = require("bcryptjs")
 
 const validateWith = require("../middleware/validation")
 const imageResize = require("../middleware/imageResize")
-const usersDatabase = require("../database/users")
+const users = require("../model/userModel")
 
 const upload = multer({
   dest: "uploads/",
@@ -29,18 +30,22 @@ router.put(
 
   async (req, res) => {
     const { name, email, location, phoneNumber } = req.body
-    const user = usersDatabase.getUserById(req.user.userId)
 
+    const user = await users.findById(req.user.userId)
+    console.log(bcrypt.hash(req.user.password))
     if (user) {
-      user.email = email
-      user.name = name
-      user.phoneNumber = phoneNumber
-      user.location = location
+      user.email = email || user.email
+      user.name = name || user.name
+      user.phoneNumber = phoneNumber || user.phoneNumber
+      user.location = location || user.location
       user.images = req.images.map((fileName) => ({
         fileName: fileName,
       }))
-      console.log(user)
-      res.status(201).send(user)
+      const updatedUser = await user.save()
+
+      res.json({
+        updatedUser,
+      })
     } else {
       res.send({ error: "An error occured. Unable to update account" })
     }

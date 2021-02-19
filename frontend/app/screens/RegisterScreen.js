@@ -22,7 +22,7 @@ const passwordRegex = new RegExp(
 )
 
 const validationSchema = Yup.object().shape({
-  name: Yup.string().required().label("Name"),
+  name: Yup.string().required().label("Name").trim(),
   email: Yup.string().trim().required().email().label("Email"),
   password: Yup.string()
     .trim()

@@ -2,7 +2,9 @@ const express = require("express")
 const router = express.Router()
 const Joi = require("joi")
 const Jwt = require("jsonwebtoken")
-const users = require("../database/users")
+const bcrypt = require("bcryptjs")
+
+const users = require("../model/userModel")
 const validateWith = require("../middleware/validation")
 
 /*
@@ -22,21 +24,22 @@ const schema = {
   4. Finally, the token is sent back to the user, in the frontend
 */
 
-router.post("/", validateWith(schema), (req, res) => {
+router.post("/", validateWith(schema), async (req, res) => {
   const { email, password } = req.body
 
-  const user = users.getUserByEmail(email)
+  const user = await users.findOne({ email })
+  const decrytedPassword = await bcrypt.compare(password, user.password)
 
-  if (!user || user.password !== password) {
-    res.status(400).send({
-      error: "Password or email is incorrect",
-    })
-  } else {
+  if (user && decrytedPassword === true) {
     const token = Jwt.sign(
-      { userId: user.id, name: user.name, email },
+      { userId: user._id, name: user.name, email },
       "jwtPrivateKey"
     )
     res.send(token)
+  } else {
+    res.status(400).send({
+      error: "Password or email is incorrect",
+    })
   }
 })
 
