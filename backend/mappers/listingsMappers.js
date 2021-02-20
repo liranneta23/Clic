@@ -1,5 +1,5 @@
 const config = require("config")
-const userDatabase = require("../database/users")
+const userDatabase = require("../model/userModel")
 
 /*
 This function does the following:
@@ -17,23 +17,23 @@ const listingsMapper = (listing) => {
     thumbnailUrl: `${baseUrl}${image.fileName}_thumb.jpg`,
   })
 
-  const mapUser = (userId) => {
-    const user = userDatabase.getUserById(userId)
-    return {
-      id: user.id,
-      name: user.name,
-      phone: user.phoneNumber,
-      email: user.email,
-      rating: user.rating,
-      numReview: user.numReview,
-      reviews: user.reviews,
-    }
-  }
+  // const mapUser = async (userId) => {
+  //   const user = await userDatabase.findById(userId)
+  //   return {
+  //     id: user.id,
+  //     name: user.name,
+  //     phone: user.phoneNumber,
+  //     email: user.email,
+  //     rating: user.rating,
+  //     numReview: user.numReview,
+  //     reviews: user.reviews,
+  //   }
+  // }
 
   return {
     ...listing,
     images: listing.images.map(mapImage),
-    seller: mapUser(listing.userId),
+    // seller: mapUser(listing.userId),
   }
 }
 

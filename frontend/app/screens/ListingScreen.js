@@ -198,7 +198,7 @@ const ListingScreen = ({ navigation }) => {
         {listings.length >= 1 ? (
           <FlatList
             data={listings}
-            keyExtractor={(listing) => listing.id.toString()}
+            keyExtractor={(listing) => listing._id}
             refreshing={refresh}
             onRefresh={() => getAllListings()}
             renderItem={({ item }) => (
@@ -212,7 +212,7 @@ const ListingScreen = ({ navigation }) => {
                     listing: item,
                     count: count,
                   }),
-                  handleSeenCounter(item.id.toString())
+                  handleSeenCounter(item._id)
                 )}
               />
             )}

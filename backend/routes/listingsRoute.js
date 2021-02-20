@@ -5,13 +5,8 @@ const multer = require("multer")
 const config = require("config")
 const authMiddleware = require("../middleware/auth")
 
-const {
-  getAllListings,
-  getSingleListing,
-
-  addListing,
-  filterListings,
-} = require("../database/listings")
+const User = require("../model/userModel")
+const Listings = require("../model/listingsModel")
 const listingsMapper = require("../mappers/listingsMappers")
 
 const {
@@ -22,6 +17,7 @@ const {
 const validateWith = require("../middleware/validation")
 const imageResize = require("../middleware/imageResize")
 const authMiddlware = require("../middleware/auth")
+const baseUrl = config.get("assetsBaseUrl")
 
 // Handles where the binaries should be kept, so as to be used as a reference when calling to the database
 const upload = multer({
@@ -43,68 +39,67 @@ const schema = {
 
 // GET /api/listings
 // Also query strings for search
-router.get("/", (req, res) => {
-  if (req.query.name) {
-    const word = req.query.name.toString()
-    const keyword = new RegExp(word, "i")
+router.get("/", async (req, res) => {
+  // const word = req.query.name.toString()
+  // const keyword = new RegExp(word, "i")
 
-    const listings = filterListings((listing) => listing.title.match(keyword))
+  // const listings = filterListings((listing) => listing.title.match(keyword))
+  const keyword = req.query.keyword
+    ? {
+        title: {
+          $regex: req.query.keyword,
+          $options: "i",
+        },
+      }
+    : {}
 
-    const resources = listings.map(listingsMapper)
-    res.send(resources)
+  const listings = await Listings.find({ ...keyword })
+  if (listings) {
+    res.send(listings)
   } else {
-    const listings = getAllListings()
-    const resources = listings.map(listingsMapper)
-    res.send(resources)
+    res.status(404).send({ error: "Listings not found." })
   }
 })
 
 // Add seen counter
-router.put("/:id", authMiddleware, (req, res) => {
-  const result = getSingleListing(parseInt(req.params.id))
+router.put("/:id", authMiddleware, async (req, res) => {
+  // const result = getSingleListing(parseInt(req.params.id))
+  const result = await Listings.findById(req.params.id)
+
   if (req.user.userId !== result.userId) {
-    result.seenCounter++
+    result.seenCounter = result.seenCounter + 1
+    res.send(result)
+  } else {
+    console.log("Error counting...")
+    res.send({ error: "Unable to increment the seen counter." })
   }
-  res.send(result)
 })
 
 // Get categories /api/listings/:categoryId protected
-router.get("/:id", (req, res) => {
-  const listings = filterListings(
-    (listing) => listing.categoryId == parseInt(req.params.id)
-  )
+router.get("/:id", async (req, res) => {
+  const listings = await Listings.find({ categoryId: parseInt(req.params.id) })
 
   if (listings.length <= 0) {
     res.send({
       error: "No items found in this category",
     })
   } else {
-    const resources = listings.map(listingsMapper)
-    res.send(resources)
+    res.send(listings)
   }
 })
 
 // Get sub categories /api/listings/sub/:id/:subcategoryId protected
-router.get("/sub/:id/:sub", (req, res) => {
-  const listingConfirm = filterListings(
-    (listing) => listing.categoryId == parseInt(req.params.id)
-  )
+router.get("/sub/:id/:sub", authMiddleware, async (req, res) => {
+  let listingConfirm = await Listings.find({
+    categoryId: parseInt(req.params.id),
+    categoryId: parseInt(req.params.sub),
+  })
   if (listingConfirm.length <= 0) {
     res.status(404).send({
-      error: "No items found in the category of this subcategory",
+      error: "No items found in this subcategory.",
     })
   } else {
-    const listings = listingConfirm.filter(
-      (listing) => listing.subCategoryId == parseInt(req.params.sub)
-    )
-    if (listings.length <= 0) {
-      res.send({
-        error: "No items found in this subcategory.",
-      })
-    } else {
-      const resources = listings.map(listingsMapper)
-      res.send(resources)
-    }
+    res.send(listingConfirm)
   }
 })
 
@@ -118,25 +113,50 @@ router.post(
     validateWith(schema),
     imageResize,
   ],
-
+  // anchor podcast
   async (req, res) => {
-    const listing = {
+    const user = await User.findById(req.user.userId)
+    const sellerOrPoster = {
+      userId: user._id,
+      name: user.name,
+      email: user.email,
+      phoneNumber: user.phoneNumber || "",
+      images: [],
+      location: user.location || "",
+    }
+    const listingForm = {
       title: req.body.title,
       price: parseFloat(req.body.price),
       categoryId: parseInt(req.body.categoryId),
       subCategoryId: parseInt(req.body.categoryId),
       description: req.body.description,
+      seenCounter: 0,
+      seller: sellerOrPoster,
     }
-    listing.images = req.images.map((fileName) => ({
-      fileName: fileName,
+    listingForm.images = req.images.map((fileName) => ({
+      url: `${baseUrl}${fileName}_full.jpg`,
+      thumbnailUrl: `${baseUrl}${fileName}_thumb.jpg`,
     }))
-    if (req.body.location) listing.location = JSON.parse(req.body.location)
-    if (req.user) listing.userId = req.user.userId
+    if (req.body.location) listingForm.location = JSON.parse(req.body.location)
+    if (req.user) listingForm.userId = req.user.userId
 
-    // This adds the listing to the database
-    addListing(listing)
+    if (user) {
+      // This adds the listing to the database
+      const listing = await Listings.create(listingForm)
 
-    res.status(201).send(listing)
+      if (listing) {
+        res.status(201).send(listing)
+      } else {
+        console.log("error occured")
+        res
+          .status(400)
+          .send({ error: "Unable to create listing. Please try again" })
+      }
+    } else {
+      res
+        .status(400)
+        .send({ error: "Unable to create listing. Please try again" })
+    }
   }
 )
 
