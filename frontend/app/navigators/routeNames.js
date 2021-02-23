@@ -12,4 +12,5 @@ export default Object.freeze({
   LISTINGS: "Listings",
   VIEW_IMAGE_SCREEN: "ViewImageScreen",
   USER_EDIT_SCREEN: "UserEditScreen",
+  PROFILE_SCREEN: "ProfileScreen",
 })

@@ -30,9 +30,34 @@ router.post("/", validateWith(schema), async (req, res) => {
   const user = await users.findOne({ email })
   const decrytedPassword = await bcrypt.compare(password, user.password)
 
+  //   {
+  //     "images": [
+  //         {
+  //             "fileName": "http://192.168.43.233:9000/assets/9ccd61c1a60b58af5b7feee7ec8ce443_full.jpg"
+  //         }
+  //     ],
+  //     "_id": "6033763b8fd69f03805423cb",
+  //     "name": "Bonaventure",
+  //     "email": "bona@gmail.com",
+  //     "password": "$2a$10$tDApLiSu6kEfVRbgJv1Mhuhg834ClcfFIuqrYwyyjfTvdJ2UbKUsK",
+  //     "reviews": [],
+  //     "createdAt": "2021-02-22T09:15:39.741Z",
+  //     "updatedAt": "2021-02-23T17:19:04.664Z",
+  //     "__v": 32,
+  //     "phoneNumber": "+254524455854",
+  //     "location": "nando"
+  // }
+
   if (user && decrytedPassword === true) {
     const token = Jwt.sign(
-      { userId: user._id, name: user.name, email },
+      {
+        userId: user._id,
+        name: user.name,
+        email,
+        phoneNumber: user.phoneNumber,
+        location: user.location,
+        images: user.images,
+      },
       "jwtPrivateKey"
     )
     res.send(token)

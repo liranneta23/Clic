@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react"
+import React, { useContext, useEffect, useState } from "react"
 import { ScrollView, Text, TextInput, StyleSheet } from "react-native"
 import * as Yup from "yup"
 
@@ -22,6 +22,7 @@ const validationSchema = Yup.object().shape({
 
 const UserEditScreen = () => {
   const { user, setUser } = useContext(AuthContext)
+  const [image, setImage] = useState([])
 
   const [uploadVisible, setUploadVisible] = useState(false)
   const [progress, setProgress] = useState(0)
@@ -39,6 +40,8 @@ const UserEditScreen = () => {
     if (!result.ok) {
       setUploadVisible(false)
       return alert(result.originalError)
+    } else {
+      setUser(result.data)
     }
     // if (result.ok) {
     //   resetForm()
@@ -57,9 +60,9 @@ const UserEditScreen = () => {
           initialValues={{
             name: user.name,
             email: user.email,
-            images: [],
-            location: "",
-            phoneNumber: null,
+            images: user.images[0].fileName,
+            location: user.location,
+            phoneNumber: user.phoneNumber,
           }}
           onSubmit={handleSubmit}
           validationSchema={validationSchema}

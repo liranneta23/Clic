@@ -11,6 +11,7 @@ import ListItemSeperator from "../components/ListItemSeperator"
 import Screen from "../components/Screen"
 import { colors } from "../config/colors"
 import routeNames from "../navigators/routeNames"
+import AppButton from "../components/AppButton"
 
 const menuItems = [
   {
@@ -45,7 +46,14 @@ const AccountScreen = ({ navigation }) => {
         <ListItem
           title={user.name}
           subTitle={user.email}
-          image={require("../assets/bonarhyme.jpg")}
+          image={{ uri: user.images[0].fileName }}
+        />
+        <AppButton
+          title="View Profile"
+          onPress={() => navigation.navigate(routeNames.PROFILE_SCREEN)}
+        />
+        <AppButton
+          title="Edit Profile"
           onPress={() => navigation.navigate(routeNames.USER_EDIT_SCREEN)}
         />
       </View>

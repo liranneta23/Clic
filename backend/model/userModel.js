@@ -37,6 +37,12 @@ const userSchema = mongoose.Schema(
       type: Array,
     },
     reviews: [reviewSchema],
+    location: {
+      type: String,
+    },
+    listings: {
+      type: Number,
+    },
   },
   {
     timestamps: true,
