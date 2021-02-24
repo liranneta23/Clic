@@ -50,6 +50,7 @@ import AppMyListings from "./app/components/AppMyListings"
 import MyListingsScreen from "./app/screens/MyListingsScreen"
 import Slider from "./app/components/Slider"
 import Rating from "./app/components/Ratings"
+import TestToken from "./app/components/TestToken"
 
 // Replace AppNavigator with AuthNavigator to see the login, registration and welcome screen. Try it!!!
 export default function App() {
@@ -90,9 +91,11 @@ export default function App() {
         value={{ user, setUser, subCategory, setSubCategory }}
       >
         <OfflineNotice />
-        <NavigationContainer theme={navigationTheme}>
+        {/* <NavigationContainer theme={navigationTheme}>
           {user ? <AppNavigator /> : <AuthNavigator />}
-        </NavigationContainer>
+        </NavigationContainer> */}
+
+        <TestToken />
       </AuthContext.Provider>
     </>
   )

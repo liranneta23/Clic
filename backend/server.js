@@ -21,6 +21,7 @@ const messagesRoute = require("./routes/messagesRoute")
 const myListingsRoute = require("./routes/myListingsRoute")
 const reviewsRoute = require("./routes/reviewsRoute")
 const userEditRoute = require("./routes/userEditRoute")
+const userNotificationsRoute = require("./routes/expoPushTokens")
 
 app.use(cors())
 
@@ -40,6 +41,7 @@ app.use("/api/messages", messagesRoute)
 app.use("/api/mylistings", myListingsRoute)
 app.use("/api/users/reviews", reviewsRoute)
 app.use("/api/user/edit", userEditRoute)
+app.use("/api/user/notifications", userNotificationsRoute)
 
 const PORT = process.env.PORT || config.get("port")
 app.listen(PORT, () => {

@@ -43,7 +43,9 @@
     "react-native-swipe-image": "^1.1.0",
     "react-native-view-slider": "^1.1.1",
     "react-native-web": "~0.13.12",
-    "yup": "^0.32.8"
+    "yup": "^0.32.8",
+    "expo-notifications": "~0.8.2",
+    "expo-constants": "~9.3.3"
   },
   "devDependencies": {
     "@babel/core": "^7.9.6"

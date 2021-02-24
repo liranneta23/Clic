@@ -1,1 +1,1 @@
-## Clic app 
+## Clic application
