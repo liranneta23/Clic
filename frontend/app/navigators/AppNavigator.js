@@ -35,30 +35,32 @@ const AppNavigator = () => {
     registerForPushNotifications()
 
     Notifications.addNotificationResponseReceivedListener(async (notif) => {
-      await console.log(notif.notification.request.content)
-      await console.log(notif.notification.request.content.data.id)
-      await console.log(
-        new Date(notif.notification.date).toDateString() +
-          " " +
-          new Date(notif.notification.date).toLocaleTimeString()
-      )
-      // const result = await listingsApi.findOne(
-      //   notif.notification.request.content.data.id
+      // await console.log(notif.notification.request.content)
+      // await console.log(notif.notification.request.content.data.id)
+      // await console.log(
+      //   new Date(notif.notification.date).toDateString() +
+      //     " " +
+      //     new Date(notif.notification.date).toLocaleTimeString()
       // )
-      // if (result.ok) {
-      //   const resultForCounter = await listingsApi.incrementCounter(notif.notification.request.content.data.id)
-      //   if (resultForCounter.ok) {
-      //     navigation.navigate(routeNames.LISTING_DETAILS, {
-      //       listing: result.data,
-      //       count: resultForCounter.data.seenCounter,
-      //     })
-      //   } else {
-      //     console.log("notification routing not working.")
-      //   }
-      // } else {
-      //   navigation.navigate(routeNames.ACCOUNT)
-      // }
-      await navigation.navigate(routeNames.ACCOUNT)
+
+      const result = await listingsApi.findOne(
+        notif.notification.request.content.data.id
+      )
+      if (result.ok) {
+        const resultForCounter = await listingsApi.incrementCounter(
+          notif.notification.request.content.data.id
+        )
+        if (resultForCounter.ok) {
+          navigation.navigate(routeNames.LISTING_DETAILS, {
+            listing: result.data,
+            count: resultForCounter.data.seenCounter,
+          })
+        } else {
+          console.log("notification routing not working.")
+        }
+      } else {
+        navigation.navigate(routeNames.LISTINGS)
+      }
     })
 
     return () => {
@@ -67,6 +69,7 @@ const AppNavigator = () => {
       // Notifications.removeNotificationSubscription(responseListener)
     }
   }, [])
+
   return (
     <Tab.Navigator>
       <Tab.Screen
