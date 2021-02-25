@@ -1,4 +1,4 @@
-import React, { useEffect } from "react"
+import React, { useEffect, useRef } from "react"
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
 import { MaterialCommunityIcons } from "@expo/vector-icons"
 import * as Notifications from "expo-notifications"
@@ -10,10 +10,15 @@ import AccountNavigator from "./AccountNavigator"
 import NewListingButton from "./NewListingButton"
 import routeNames from "./routeNames"
 import expoPushTokensApi from "../../api/expoPushTokens"
+import navigation from "./RootNavigation"
+import listingsApi from "../../api/listings"
 
 const Tab = createBottomTabNavigator()
 
 const AppNavigator = () => {
+  const notificationListener = useRef()
+  const responseListener = useRef()
+
   const registerForPushNotifications = async () => {
     try {
       const permission = await Permissions.askAsync(Permissions.NOTIFICATIONS)
@@ -21,7 +26,6 @@ const AppNavigator = () => {
 
       const token = await Notifications.getExpoPushTokenAsync()
       expoPushTokensApi.register(token)
-      console.log(token)
     } catch (error) {
       console.log("Error getting a push token", error)
     }
@@ -29,7 +33,39 @@ const AppNavigator = () => {
   useEffect(() => {
     let isMounted = false
     registerForPushNotifications()
-    return () => (isMounted = true)
+
+    Notifications.addNotificationResponseReceivedListener(async (notif) => {
+      await console.log(notif.notification.request.content)
+      await console.log(notif.notification.request.content.data.id)
+      await console.log(
+        new Date(notif.notification.date).toDateString() +
+          " " +
+          new Date(notif.notification.date).toLocaleTimeString()
+      )
+      // const result = await listingsApi.findOne(
+      //   notif.notification.request.content.data.id
+      // )
+      // if (result.ok) {
+      //   const resultForCounter = await listingsApi.incrementCounter(notif.notification.request.content.data.id)
+      //   if (resultForCounter.ok) {
+      //     navigation.navigate(routeNames.LISTING_DETAILS, {
+      //       listing: result.data,
+      //       count: resultForCounter.data.seenCounter,
+      //     })
+      //   } else {
+      //     console.log("notification routing not working.")
+      //   }
+      // } else {
+      //   navigation.navigate(routeNames.ACCOUNT)
+      // }
+      await navigation.navigate(routeNames.ACCOUNT)
+    })
+
+    return () => {
+      isMounted = true
+      // Notifications.removeNotificationSubscription(notificationListener)
+      // Notifications.removeNotificationSubscription(responseListener)
+    }
   }, [])
   return (
     <Tab.Navigator>

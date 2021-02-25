@@ -5,6 +5,7 @@ const listingsSchema = mongoose.Schema({
   images: { type: Array, required: true },
   categoryId: { type: Number, required: true },
   subCategoryId: { type: Number },
+  description: { type: String },
   price: { type: Number, required: true },
   userId: {
     type: mongoose.Schema.Types.ObjectId,

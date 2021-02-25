@@ -51,6 +51,7 @@ import MyListingsScreen from "./app/screens/MyListingsScreen"
 import Slider from "./app/components/Slider"
 import Rating from "./app/components/Ratings"
 import TestToken from "./app/components/TestToken"
+import { navigationRef } from "./app/navigators/RootNavigation"
 
 // Replace AppNavigator with AuthNavigator to see the login, registration and welcome screen. Try it!!!
 export default function App() {
@@ -85,17 +86,25 @@ export default function App() {
     }
   }, [])
 
+  /**
+   * Trick used so as to use navigation in the AppNavigation.js
+   * const navigationRef = React.createRef()
+   * const navigation = navigationRef.current
+   * navigation.navigate(routenames.ACCOUNT_SCREEN)
+   * The logic was later implemented in RootNavigation.js
+   */
+
   return (
     <>
       <AuthContext.Provider
         value={{ user, setUser, subCategory, setSubCategory }}
       >
         <OfflineNotice />
-        {/* <NavigationContainer theme={navigationTheme}>
+        <NavigationContainer ref={navigationRef} theme={navigationTheme}>
           {user ? <AppNavigator /> : <AuthNavigator />}
-        </NavigationContainer> */}
+        </NavigationContainer>
 
-        <TestToken />
+        {/* <TestToken /> */}
       </AuthContext.Provider>
     </>
   )

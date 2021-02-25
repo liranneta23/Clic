@@ -4,6 +4,7 @@ const Joi = require("joi")
 const multer = require("multer")
 const config = require("config")
 const authMiddleware = require("../middleware/auth")
+const pushNotifications = require("../utilities/pushNotifications")
 
 const User = require("../model/userModel")
 const Listings = require("../model/listingsModel")
@@ -74,6 +75,18 @@ router.put("/:id", authMiddleware, async (req, res) => {
     res.send({ error: "Unable to increment the seen counter." })
   }
 })
+// find one  GET /api/listings/:id
+router.get("/:id", authMiddleware, async (req, res) => {
+  // const result = getSingleListing(parseInt(req.params.id))
+  const result = await Listings.findById(req.params.id)
+
+  if (result) {
+    res.send(result)
+  } else {
+    console.log("Unable to get listing")
+    res.send({ error: "Failed to get the listing." })
+  }
+})
 
 // Get categories /api/listings/:categoryId protected
 router.get("/:id", async (req, res) => {
@@ -116,6 +129,9 @@ router.post(
   // anchor podcast
   async (req, res) => {
     const user = await User.findById(req.user.userId)
+    //
+    const usersWithPush = await User.find({}, { _id: 0, expoPushToken: 1 })
+
     const sellerOrPoster = {
       userId: user._id,
       name: user.name,
@@ -146,6 +162,14 @@ router.post(
 
       if (listing) {
         res.status(201).send(listing)
+        pushNotifications({
+          targetExpoPushToken: usersWithPush,
+          title: `${listing.seller.name} posted ${listing.title}.`,
+          body: `${listing.description && listing.description} in ${
+            listing.seller.location && listing.seller.location
+          }`,
+          data: `${listing._id}`,
+        })
       } else {
         console.log("error occured")
         res
