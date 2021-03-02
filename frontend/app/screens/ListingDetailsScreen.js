@@ -240,9 +240,9 @@ const ListingDetailsScreen = ({ route }) => {
         </View>
         <View style={styles.userContainer}>
           <ListItem
-            image={require("../assets/bonarhyme.jpg")}
+            image={{ uri: listing.seller.images }}
             title={listing.seller.name}
-            subTitle="5 listings"
+            // subTitle="5 listings"
           />
         </View>
       </View>

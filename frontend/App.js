@@ -52,6 +52,7 @@ import Slider from "./app/components/Slider"
 import Rating from "./app/components/Ratings"
 import TestToken from "./app/components/TestToken"
 import { navigationRef } from "./app/navigators/RootNavigation"
+import DatePicker from "./app/components/DatePicker"
 
 // Replace AppNavigator with AuthNavigator to see the login, registration and welcome screen. Try it!!!
 export default function App() {
@@ -103,8 +104,6 @@ export default function App() {
         <NavigationContainer ref={navigationRef} theme={navigationTheme}>
           {user ? <AppNavigator /> : <AuthNavigator />}
         </NavigationContainer>
-
-        {/* <TestToken /> */}
       </AuthContext.Provider>
     </>
   )

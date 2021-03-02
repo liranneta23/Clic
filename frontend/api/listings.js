@@ -17,6 +17,8 @@ const addListing = (listing, onUploadProgress) => {
   data.append("categoryId", listing.category.value)
   data.append("subCategoryId", listing.subCategory.value)
   data.append("description", listing.description)
+  data.append("location2", listing.location2)
+  data.append("date", listing.date)
 
   listing.images.forEach((image, index) => {
     data.append("images", {

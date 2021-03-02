@@ -129,7 +129,8 @@ router.post(
   // anchor podcast
   async (req, res) => {
     const user = await User.findById(req.user.userId)
-    //
+
+    //find users with push token
     const usersWithPush = await User.find({}, { _id: 0, expoPushToken: 1 })
 
     const sellerOrPoster = {
@@ -137,8 +138,9 @@ router.post(
       name: user.name,
       email: user.email,
       phoneNumber: user.phoneNumber || "",
-      images: [],
+      images: user.images[0].fileName || "",
       location: user.location || "",
+      listings: user.listings + 1,
     }
     const listingForm = {
       title: req.body.title,
@@ -146,6 +148,8 @@ router.post(
       categoryId: parseInt(req.body.categoryId),
       subCategoryId: parseInt(req.body.categoryId),
       description: req.body.description,
+      location2: req.body.location2,
+      date: req.body.date,
       seenCounter: 0,
       seller: sellerOrPoster,
     }

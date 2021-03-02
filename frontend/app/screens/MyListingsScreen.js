@@ -31,9 +31,7 @@ const MyListingsScreen = () => {
   useEffect(() => {
     let isMounted = true
     getMyListings()
-    return () => {
-      isMounted = false
-    }
+    return () => (isMounted = false)
   }, [])
 
   return (

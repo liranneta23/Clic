@@ -17,6 +17,12 @@ const listingsSchema = mongoose.Schema({
     latitude: Number,
     longitude: Number,
   },
+  location2: {
+    type: String,
+  },
+  date: {
+    type: String,
+  },
   seenCounter: { type: Number },
 })
 

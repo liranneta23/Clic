@@ -45,7 +45,8 @@
     "react-native-web": "~0.13.12",
     "yup": "^0.32.8",
     "expo-notifications": "~0.8.2",
-    "expo-constants": "~9.3.3"
+    "expo-constants": "~9.3.3",
+    "@react-native-community/datetimepicker": "3.0.4"
   },
   "devDependencies": {
     "@babel/core": "^7.9.6"

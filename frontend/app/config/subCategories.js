@@ -239,5 +239,33 @@ const subCategories = [
       },
     ],
   },
+  {
+    label: "Accomodation",
+    value: 10,
+    subCategories: [
+      {
+        label: "Apartment",
+        value: 1,
+      },
+      {
+        label: "House",
+        value: 2,
+      },
+    ],
+  },
+  {
+    label: "Event",
+    value: 11,
+    subCategories: [
+      {
+        label: "On-Campus",
+        value: 1,
+      },
+      {
+        label: "Off-Campus",
+        value: 2,
+      },
+    ],
+  },
 ]
 export default subCategories

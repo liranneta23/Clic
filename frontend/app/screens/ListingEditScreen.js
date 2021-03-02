@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react"
 import { ScrollView, StyleSheet } from "react-native"
 import * as Yup from "yup"
+import DateTimePicker from "@react-native-community/datetimepicker"
 
 import Screen from "../components/Screen"
 import {
@@ -19,6 +20,7 @@ import categories from "../config/categories"
 import SubAppFormPicker from "../components/forms/subCategories/SupAppFormPicker"
 import subCategories from "../config/subCategories"
 import routeNames from "../navigators/routeNames"
+import DatePicker from "../components/DatePicker"
 
 const validationSchema = Yup.object().shape({
   title: Yup.string().required().min(1).label("Title"),
@@ -68,6 +70,8 @@ const ListingEditScreen = ({ navigation }) => {
             title: "",
             price: "",
             description: "",
+            location2: "",
+            date: "",
             category: null,
             subCategory: null,
             images: [],
@@ -106,6 +110,15 @@ const ListingEditScreen = ({ navigation }) => {
             placeholder="Description"
             flexDirection="column"
           />
+          <AppFormField
+            maxLength={100}
+            multiline
+            name="location2"
+            placeholder="location"
+            flexDirection="column"
+          />
+          <DatePicker name="date" />
+
           <SubmitButton title="Post" />
         </AppForm>
       </Screen>

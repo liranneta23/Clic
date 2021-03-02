@@ -38,6 +38,18 @@ const categories = [
     backgroundColor: "gray",
     icon: "file-presentation-box",
   },
+  {
+    label: "Accomodation",
+    value: 10,
+    backgroundColor: "yellowgreen",
+    icon: "warehouse",
+  },
+  {
+    label: "Events",
+    value: 11,
+    backgroundColor: "coral",
+    icon: "party-popper",
+  },
 ]
 
 export default categories
