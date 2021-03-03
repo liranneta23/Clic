@@ -29,7 +29,6 @@ const addListing = (listing, onUploadProgress) => {
   })
   if (listing.location)
     data.append("location", JSON.stringify(listing.location))
-
   return client.post(endPoint, data, {
     // This handles upload time setting
     onUploadProgress: (progressTime) =>

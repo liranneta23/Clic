@@ -123,7 +123,7 @@ router.post(
   authMiddleware,
   [
     upload.array("images", config.get("maxImageCount")),
-    validateWith(schema),
+    // validateWith(schema),
     imageResize,
   ],
   // anchor podcast
