@@ -11,6 +11,7 @@ import {
   FlatList,
   TextInput,
   Button,
+  SafeAreaView,
 } from "react-native"
 import { Image } from "react-native-expo-image-cache"
 import { useNavigation } from "@react-navigation/native"
@@ -27,6 +28,7 @@ import Rating from "../components/Ratings"
 import ListItemSeperator from "../components/ListItemSeperator"
 import AppTextInput from "../components/AppTextInput"
 import apiReviews from "../../api/reviews"
+import listingsApi from "../../api/listings"
 import ErrorMessage from "../components/forms/ErrorMessage"
 
 const options = [
@@ -59,6 +61,7 @@ const ListingDetailsScreen = ({ route }) => {
   const [userToBeReviewedId, setUserToBeReviewedId] = useState()
   const [error, setError] = useState(false)
   const [success, setSuccess] = useState(false)
+  const [userListings, setUserListings] = useState([])
 
   const { listing, count } = route.params
   const navigation = useNavigation()
@@ -80,6 +83,21 @@ const ListingDetailsScreen = ({ route }) => {
       setSuccess(true)
     }
   }
+
+  const getAllUsersListings = async () => {
+    const result = await listingsApi.findAUsersListings(listing.userId)
+    if (result.ok) {
+      setUserListings(result.data)
+    } else {
+      console.log("An error occured.")
+    }
+  }
+
+  useEffect(() => {
+    let isModified = true
+    getAllUsersListings()
+    return () => (isModified = false)
+  }, [])
 
   // Set up in google
   // useEffect(() => {
@@ -242,9 +260,27 @@ const ListingDetailsScreen = ({ route }) => {
           <ListItem
             image={{ uri: listing.seller.images }}
             title={listing.seller.name}
-            // subTitle="5 listings"
+            subTitle={<AppText>{userListings.length} listings</AppText>}
           />
         </View>
+        {userListings.length >= 1 && (
+          <SafeAreaView style={{ flex: 1 }}>
+            <AppText>Other listings by {listing.seller.name}</AppText>
+            <FlatList
+              data={userListings}
+              keyExtractor={(listing) => listing._id}
+              renderItem={({ item }) => (
+                <ListItem
+                  title={item.title}
+                  subTitle={"$" + item.price}
+                  // image={item.images[0].url}
+                  thumbnailImage={item.images[0].thumbnailUrl}
+                  // onPress={() => console.log(item)}
+                />
+              )}
+            />
+          </SafeAreaView>
+        )}
       </View>
     </ScrollView>
   )

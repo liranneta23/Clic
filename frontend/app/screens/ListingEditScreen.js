@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useState, useRef } from "react"
 import { ScrollView, StyleSheet } from "react-native"
 import * as Yup from "yup"
 import DateTimePicker from "@react-native-community/datetimepicker"
@@ -35,6 +35,11 @@ const ListingEditScreen = ({ navigation }) => {
   const location = useLocation()
   const [uploadVisible, setUploadVisible] = useState(false)
   const [progress, setProgress] = useState(0)
+  const ref = useRef(null)
+
+  const someFuncton = () => {
+    console.log(ref.current.values)
+  }
 
   // listing is the value from formik, the second argument is from formik too. use to reset the data.
   const handleSubmit = async (listing, { resetForm }) => {

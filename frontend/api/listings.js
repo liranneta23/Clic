@@ -6,6 +6,7 @@ const getListings = () => client.get(endPoint)
 const filterListings = (id) => client.get(`/api/listings/${id}`)
 const incrementCounter = (id) => client.put(`/api/listings/${id}`)
 const findOne = (id) => client.get(`/api/listings/${id}`)
+const findAUsersListings = (id) => client.get(`/api/listings/all/${id}`)
 const searchListings = (keyword) => client.get(`/api/listings/?name=${keyword}`)
 const filterListingsSub = (id, sub) =>
   client.get(`/api/listings/sub/${id}/${sub}`)
@@ -44,4 +45,5 @@ export default {
   searchListings,
   filterListingsSub,
   findOne,
+  findAUsersListings,
 }

@@ -187,5 +187,16 @@ router.post(
     }
   }
 )
+// Get all listings by a user /api/listings/all/:id protected
+router.get("/all/:id", authMiddleware, async (req, res) => {
+  const listings = await Listings.find({ userId: req.params.id })
 
+  if (listings.length <= 0) {
+    res.send({
+      error: "No items found for this user",
+    })
+  } else {
+    res.send(listings)
+  }
+})
 module.exports = router
