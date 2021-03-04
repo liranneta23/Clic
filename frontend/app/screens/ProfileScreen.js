@@ -9,10 +9,20 @@ const ProfileScreen = () => {
   const { user } = useContext(AuthContext)
   return (
     <Screen>
-      <Image
-        source={{ uri: user.images[0].fileName }}
-        style={{ width: "100%", height: 300, resizeMode: "contain" }}
-      />
+      {user.images.length !== 0 ? (
+        <Image
+          source={{ uri: user.images[0].fileName }}
+          style={{ width: "100%", height: 300, resizeMode: "contain" }}
+        />
+      ) : (
+        <Image
+          source={{
+            uri:
+              "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png",
+          }}
+          style={{ width: "100%", height: 300, resizeMode: "contain" }}
+        />
+      )}
       <View style={styles.container}>
         <AppText>Name: {user.name}</AppText>
         <AppText>Email: {user.email}</AppText>

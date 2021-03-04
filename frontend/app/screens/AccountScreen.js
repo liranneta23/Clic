@@ -43,11 +43,25 @@ const AccountScreen = ({ navigation }) => {
   return (
     <Screen style={styles.screen}>
       <View style={styles.container}>
-        <ListItem
-          title={user.name}
-          subTitle={user.email}
-          image={{ uri: user.images[0].fileName }}
-        />
+        {user.images.length !== 0 ? (
+          <ListItem
+            title={user.name}
+            subTitle={user.email}
+            image={{
+              uri: user.images[0].fileName,
+            }}
+          />
+        ) : (
+          <ListItem
+            title={user.name}
+            subTitle={user.email}
+            image={{
+              uri:
+                "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png",
+            }}
+          />
+        )}
+
         <AppButton
           title="View Profile"
           onPress={() => navigation.navigate(routeNames.PROFILE_SCREEN)}

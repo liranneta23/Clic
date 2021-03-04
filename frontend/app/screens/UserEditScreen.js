@@ -48,6 +48,11 @@ const UserEditScreen = () => {
     // }
   }
 
+  const theImage =
+    user.images.length !== 0
+      ? user.images[0].fileName
+      : "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png"
+
   return (
     <ScrollView>
       <Screen style={styles.container}>
@@ -60,7 +65,7 @@ const UserEditScreen = () => {
           initialValues={{
             name: user.name,
             email: user.email,
-            images: user.images[0].fileName,
+            images: theImage,
             location: user.location,
             phoneNumber: user.phoneNumber,
           }}
