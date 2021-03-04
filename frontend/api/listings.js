@@ -3,7 +3,7 @@ import client from "./client"
 // Get all listings
 const endPoint = "/api/listings/"
 const getListings = () => client.get(endPoint)
-const filterListings = (id) => client.get(`/api/listings/${id}`)
+const filterListings = (id) => client.get(`/api/listings/sub/${id}`)
 const incrementCounter = (id) => client.put(`/api/listings/${id}`)
 const findOne = (id) => client.get(`/api/listings/${id}`)
 const findAUsersListings = (id) => client.get(`/api/listings/all/${id}`)

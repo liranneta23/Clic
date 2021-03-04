@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, useContext } from "react"
 import {
   FlatList,
   StyleSheet,
@@ -23,6 +23,7 @@ import AppButton from "../components/AppButton"
 import AppActivityIndicator from "../components/AppActivityIndicator"
 import ErrorMessage from "../components/forms/ErrorMessage"
 import defaultStyles from "../config/styles"
+import AuthContext from "../auth/appContext"
 
 const ListingScreen = ({ navigation }) => {
   const [refresh, setRefresh] = useState(false)
@@ -36,6 +37,7 @@ const ListingScreen = ({ navigation }) => {
   const [subCategory, setSubCategory] = useState(0)
   const [isSubCategories, setIsSubCategories] = useState([])
   const [hidden, setHidden] = useState(false)
+  const { setSearchKeywords, searchKeywords } = useContext(AuthContext)
 
   // To use multiple times, do not destructure. just use a variable.
   const getAllListings = async () => {
@@ -67,6 +69,12 @@ const ListingScreen = ({ navigation }) => {
       setError(false)
       setErrorMessage(result.data.error)
       setListings(result.data)
+      const finder = result.data.some((field) => field.title.includes(keyword))
+      if (!finder) {
+        setSearchKeywords([...searchKeywords, keyword])
+      }
+
+      // console.log(new Set(searchKeywords))
     }
   }
 

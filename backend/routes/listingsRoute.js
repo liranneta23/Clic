@@ -38,22 +38,23 @@ const schema = {
   }).optional(),
 }
 
-// GET /api/listings
+// GET /api/listings/:keyword
 // Also query strings for search
 router.get("/", async (req, res) => {
   // const word = req.query.name.toString()
   // const keyword = new RegExp(word, "i")
 
   // const listings = filterListings((listing) => listing.title.match(keyword))
-  const keyword = req.query.keyword
+
+  const keyword = req.query.name
     ? {
         title: {
-          $regex: req.query.keyword,
+          $regex: req.query.name,
           $options: "i",
         },
       }
     : {}
-
+  // console.log(req.query.name)
   const listings = await Listings.find({ ...keyword })
   if (listings) {
     res.send(listings)
@@ -89,8 +90,8 @@ router.get("/:id", authMiddleware, async (req, res) => {
 })
 
 // Get categories /api/listings/:categoryId protected
-router.get("/:id", async (req, res) => {
-  const listings = await Listings.find({ categoryId: parseInt(req.params.id) })
+router.get("/sub/:id", async (req, res) => {
+  const listings = await Listings.find({ categoryId: req.params.id })
 
   if (listings.length <= 0) {
     res.send({
